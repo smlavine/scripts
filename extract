@@ -3,7 +3,7 @@
 # Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
 # Originally written by Luke Smith for his dotfiles and improved by Sebastian
 # LaVine.
-# Licensed under the GNU GPLv3. See smlss/GPLv3.txt for details.
+# Licensed under the GNU GPLv3. See GPLv3.txt for details.
 #
 # File: extract
 # Description: A general, all-purpose extraction script. By default, the

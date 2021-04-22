@@ -1,6 +1,6 @@
 #!/bin/sh
 # Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
-# Licensed under the MIT license. See smlss/MIT.txt for details.
+# Licensed under the MIT license. See MIT.txt for details.
 #
 # File:        mypassmenu
 # Description: Opens a stylized dmenu prompt with passwords to select from.

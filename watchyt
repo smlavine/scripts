@@ -1,6 +1,6 @@
 #!/bin/sh
 # Copyright (c) 2020-2021 Sebastian LaVine <mail@smlavine.com>
-# Licensed under the GNU GPLv3. See smlss/GPLv3.txt for details.
+# Licensed under the GNU GPLv3. See GPLv3.txt for details.
 #
 # File:        watchyt
 # Description: Watch the given YouTube video in mpv, using youtube-dl.
