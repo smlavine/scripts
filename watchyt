@@ -54,7 +54,7 @@ url="$(echo -n "$url" | tr -cd '[:alnum:][:punct:]' )"
 if [ "$description" ]; then
 	descfile="$(mktemp watchyt.XXXXXXXX -p /tmp)"
 	youtube-dl --get-title "$url" >> "$descfile"
-	printf "$url\n\n" >> "$descfile"
+	echo -e "$url\n" >> "$descfile"
 	youtube-dl --get-description "$url" >> "$descfile"
 	st -e less "$descfile"
 	rm "$descfile" # Once less is closed, then delete file.
