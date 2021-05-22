@@ -31,7 +31,8 @@ elif [ "$title" ]; then
 	info="$title"
 	test "$album" && info="$info ($album)"
 else
-	info="$(cmus-remote -C status | grep file | cut -d' ' -f2-)"
+	info="$(cmus-remote -C status | grep file | cut -d' ' -f2- | \
+		sed "s/^\/home\/$USER/~/")"
 fi
 
 # Yank: Pastes song info into system clipboard
