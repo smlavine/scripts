@@ -1,0 +1,21 @@
+#!/bin/sh
+# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
+# Licensed under the MIT license. See MIT.txt for details.
+#
+# File:        lcg
+# Description: Launches several instances of catgirl running under tabbed,
+#              to facilitate connections to several IRC servers.
+# Arguments:   catgirl config files to use.
+
+# $XDG_CONFIG_HOME/catgirl/dev/ is the directory where I have my config files
+# for oftc.net, libera.chat, etc.
+test "$*" && configs="$@" ||
+	configs="$(ls "$XDG_CONFIG_HOME/catgirl/dev/" | sed 's/^/dev\//')"
+
+window="$(tabbed -d)"
+
+echo "$window"
+
+for file in $configs; do
+	st -w "$window" -e catgirl "$file" &
+done
