@@ -14,10 +14,10 @@ artist="$(get_value artist)"
 album="$(get_value album)"
 title="$(get_value title)"
 
-info="$artist - $album - $title"
+info="$artist - $title ($album)"
 
 # If the music is improperly tagged, at least give the file name.
-[ "$info" = " - album - " ] && info="$(get_value file)"
+#[ "$info" = " - album - " ] && info="$(get_value file)"
 
 # Yank: Pastes song info into system clipboard
 # Duck: Opens web browser and searches song info on DuckDuckGo
