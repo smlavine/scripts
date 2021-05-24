@@ -1,0 +1,12 @@
+#!/bin/sh
+# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
+# Licensed under the MIT license. See smlss/MIT.txt for details.
+#
+# File:        display-todo
+# Description: Display a formatted to-do file with dunst.
+
+
+str="$(printf "To-do:\\n" | cat - ~/TODO)"
+
+pgrep dunst >/dev/null && dunstify "$str" || echo "$str" 
+
