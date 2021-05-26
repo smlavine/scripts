@@ -8,5 +8,5 @@
 
 str="$(printf "To-do:\\n" | cat - ~/TODO)"
 
-pgrep dunst >/dev/null && dunstify "$str" || echo "$str" 
+pgrep dunst >/dev/null && dunstify "$str" || echo "$str"
 
