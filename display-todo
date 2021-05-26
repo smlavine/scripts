@@ -6,7 +6,8 @@
 # Description: Display a formatted to-do file with dunst.
 
 
-str="$(printf "To-do:\\n" | cat - ~/TODO)"
+str="To-do:
+$(sed 's/^/> /' ~/TODO)"
 
 pgrep dunst >/dev/null && dunstify "$str" || echo "$str"
 
