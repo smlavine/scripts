@@ -1,0 +1,33 @@
+#!/bin/sh
+# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
+# Licensed under the MIT license. See MIT.txt for details.
+#
+# File:        cgs
+# Description: Checks the git statuses of given git repositories. By default,
+#              cgs checks the git statuses of all git repositories in the
+#              current directory.
+# Arguments:   Paths to git repositories to check the status of.
+
+if [ "$#" -eq 0 ]; then
+	repos="$(find . -maxdepth 1 -type d)"
+else
+	repos="$*"
+fi
+
+for path in $repos; do
+	# Because this is in a subshell, we do not need to `cd -` at the end of
+	# every looping.
+
+	(cd "$path" || exit
+	[ -d ".git" ] || exit
+
+	# `git status -s` is repeated here, because I want to print the repository
+	# path before the status information, but I want `git status -s` to output
+	# in color, which prevents me from storing the command output in a
+	# variable. All in all, I don't expect `git status -s` to take that long to
+	# run, so this works well enough for me.
+	[ "$(git status -s)" ] || exit
+
+	echo "$path"
+	git status -s)
+done
