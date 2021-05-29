@@ -9,8 +9,5 @@
 # Directory containing the screenshots.
 screenshot_path="$HOME/Documents/pictures/screenshots/"
 
-cd "$screenshot_path"
-
-sxiv $(ls -A1t)
-
-cd -
+(cd "$screenshot_path"
+sxiv $(ls -A1t))
