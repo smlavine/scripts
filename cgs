@@ -10,24 +10,27 @@
 
 if [ "$#" -eq 0 ]; then
 	repos="$(find . -maxdepth 1 -type d)"
+	used_find=1
 else
 	repos="$*"
 fi
 
-for path in $repos; do
-	# Because this is in a subshell, we do not need to `cd -` at the end of
-	# every looping.
+# note the subshell
+for dirpath in $repos; do (
+	[ "$dirpath" = . ]  && dirpath="$PWD"
+	cd "$dirpath" || exit
+	[ -d .git ] || exit
 
-	(cd "$path" || exit
-	[ -d ".git" ] || exit
+	[ "$used_find" ] && dirpath="$(echo "$dirpath" | xargs basename)"
 
-	# `git status -s` is repeated here, because I want to print the repository
-	# path before the status information, but I want `git status -s` to output
-	# in color, which prevents me from storing the command output in a
-	# variable. All in all, I don't expect `git status -s` to take that long to
-	# run, so this works well enough for me.
-	[ "$(git status -s)" ] || exit
+	status="$(git -c color.status=always status -sb)"
 
-	echo "$path"
-	git status -s)
-done
+	# If status has two lines of output, then that means that there is tracking
+	# info and repository information. I don't want to output tracking info
+	# *unless* the branch is ahead/behind what is behind tracked, which can
+	# be detected by the second statement grepping for ']$'.
+	# TODO: What if a repository has work on it but doesn't have a remote?
+	[ "$(echo "$status" | wc -l)" -ge 2 ] && echo "$dirpath $status" && exit
+	echo "$status" | grep -q ']$' && echo "$dirpath $status" && exit
+
+) done
