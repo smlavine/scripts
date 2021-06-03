@@ -9,8 +9,8 @@
 options="o"
 while getopts "$options" o; do
 	case "$o" in
-		o) redshift -x && exit;;
-		*) echo "USAGE: rs [-$options]" && exit;;
+		o) redshift -x && exit ;;
+		*) echo "USAGE: rs [-$options]" && exit ;;
 	esac
 done
 
