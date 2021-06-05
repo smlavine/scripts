@@ -15,7 +15,7 @@ while getopts "$options" o; do
 	esac
 done
 
-shift $(($OPTIND - 1))
+shift $((OPTIND - 1))
 packages="$(echo "$*" | tr ' ' '\n')"
 file='packages.txt'
 [ "$aur" ] && file="aur-$file"

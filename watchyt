@@ -25,7 +25,7 @@ while getopts "cdh" o; do
 done
 
 # I didn't know this existed until I read the getopts man page. It's useful!
-shift $(($OPTIND - 1))
+shift $((OPTIND - 1))
 
 # if there isn't already a url and there is no argument, get a url through a
 # dmenu prompt.
