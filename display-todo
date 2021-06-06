@@ -6,8 +6,9 @@
 # Description: Display a formatted to-do file with dunst.
 
 
+# This is an intended newline here.
 str="To-do:
-$(sed 's/^/> /' ~/TODO)"
+$(awk '{ print NR " " $0 }' ~/TODO)"
 
 pgrep dunst >/dev/null && dunstify "$str" || echo "$str"
 
