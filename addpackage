@@ -4,7 +4,7 @@
 #
 # File:        addpackage
 # Description: Add the given package to smlss's install lists.
-# Options:     -a	Add packages to the AUR list, not the Arch list.
+# Options:     -a        Add packages to the AUR list, not the Arch list.
 # Arguments:   names of packages to add
 
 options="ah"

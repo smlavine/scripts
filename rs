@@ -4,7 +4,7 @@
 #
 # File:        rs
 # Description: Turns on (or off) the blue light filter.
-# Options:     -o	Turn off the blue light filter.
+# Options:     -o        Turn off the blue light filter.
 
 options="o"
 while getopts "$options" o; do

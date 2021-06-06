@@ -6,8 +6,8 @@
 # Description: Checks the git statuses of given git repositories. By default,
 #              cgs checks the git statuses of all git repositories in the
 #              current directory.
-# Options:     -r	Also check the status of repositories
-#                       within the given directories.
+# Options:     -r        Also check the status of repositories
+#                        within the given directories.
 # Arguments:   Paths to git repositories to check the status of.
 
 # Unless -r is specified, we only want to look for git repositories at the top

@@ -4,8 +4,8 @@
 #
 # File:        watchyt
 # Description: Watch the given YouTube video in mpv, using youtube-dl.
-# Options:     -c	Use the clipboard value as the video URL.
-#              -d	Open the video description in less. (don't launch mpv)
+# Options:     -c        Use the clipboard value as the video URL.
+#              -d        Open the video description in less. (don't launch mpv)
 # Arguments:   URL of the video to watch
 
 usage()

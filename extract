@@ -8,7 +8,7 @@
 # File: extract
 # Description: A general, all-purpose extraction script. By default, the
 #              archive is extracted into a new directory.
-# Options:     -c	Extract contents into current directory.
+# Options:     -c        Extract contents into current directory.
 # Arguments:   path to archive
 
 
