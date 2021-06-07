@@ -7,4 +7,4 @@
 #              cmus. 
 
 pidof cmus && cmus-remote -u
-pidof pianobar && echo -n ' ' > ~/.config/pianobar/ctl
+pidof pianobar && printf ' ' > ~/.config/pianobar/ctl
