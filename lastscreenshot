@@ -10,4 +10,7 @@
 screenshot_path="$HOME/Documents/pictures/screenshots/"
 
 cd "$screenshot_path" || exit
+
+# This is intentional word splitting.
+# shellcheck disable=SC2046
 sxiv $(ls -A1t)
