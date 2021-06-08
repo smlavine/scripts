@@ -53,10 +53,12 @@ if [ -z "$url" ]; then
 
 elif [ "$description" ]; then
 	descfile="$(mktemp watchyt.XXXXXXXX -p /tmp)"
-	printf "%s\n\n" "$url" >> "$descfile"
-	youtube-dl --get-title "$url" >> "$descfile"
-	echo "----------------" >> "$descfile"
-	youtube-dl --get-description "$url" >> "$descfile"
+	{
+		echo "$url"
+		youtube-dl --get-title "$url"
+		echo "----------------"
+		youtube-dl --get-description "$url"
+	} >> "$descfile"
 	st -e less "$descfile"
 	rm "$descfile" # Once less is closed, then delete file.
 
