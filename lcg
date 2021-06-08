@@ -7,15 +7,15 @@
 #              to facilitate connections to several IRC servers.
 # Arguments:   catgirl config files to use.
 
-# $XDG_CONFIG_HOME/catgirl/dev/ is the directory where I have my config files
-# for oftc.net, libera.chat, etc.
-test "$*" && configs="$@" ||
-	configs="$(ls "$XDG_CONFIG_HOME/catgirl/dev/" | sed 's/^/dev\//')"
+catgirl_configs="${CATGIRL_DIR:-$XDG_CONFIG_HOME/catgirl/dev}"
+
+[ "$#" -gt 0 ] && servers="$*" \
+	|| servers="$(find "$catgirl_configs" -type f)"
 
 window="$(tabbed -d)"
 
 echo "$window"
 
-for file in $configs; do
+for file in $servers; do
 	st -w "$window" -e catgirl "$file" &
 done
