@@ -20,7 +20,7 @@ while getopts "cdh" o; do
 	case "$o" in
 		c) url="$(xclip -selection c -o)" ;;
 		d) description="True" ;;
-		*) usage ;;
+		*) usage; exit ;;
 	esac
 done
 
@@ -49,6 +49,7 @@ url="$(printf "%s" "$url" | tr -cd '[:alnum:][:punct:]' )"
 
 if [ -z "$url" ]; then
 	usage
+	exit
 
 elif [ "$description" ]; then
 	descfile="$(mktemp watchyt.XXXXXXXX -p /tmp)"
