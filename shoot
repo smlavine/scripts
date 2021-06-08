@@ -21,7 +21,9 @@ xwd -root | convert xwd:- png:"$file"
 # example: "screenshot2019-11-17.948921698"
 [ -z "$name" ] && name="screenshot$(date '+%F.%N')"
 
-[ -d "$picture_path" ] && mv "$file" "$picture_path/$name.png" ||
+if [ -d "$picture_path" ]; then
+	mv "$file" "$picture_path/$name.png"
+else
 	mv "$file" "$HOME/$name.png"
-
+fi
 
