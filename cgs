@@ -12,7 +12,7 @@
 
 # Unless -r is specified, we only want to look for git repositories at the top
 # level of this directory. We use a maxdepth of 2 by default because we are
-# `find`-ing the .git directories themselves.
+# `find`-ing for .git directories, not the directories that contain them.
 maxdepth="-maxdepth 2"
 
 options="r"
@@ -25,26 +25,20 @@ done
 
 shift $((OPTIND - 1))
 
-if [ "$#" -eq 0 ]; then
-	# Find all directories named .git and take off the '/.git' at
-	# the end of each of them to get the paths to the git
-	# repositories.
-	# (cheers to e36freak of #bash@libera.chat for help with this)
+[ "$#" -eq 0 ] && directories='.' || directories="$*"
 
-	# There are no quotes around $maxdepth so that "-maxdepth 2" isn't
-	# interpreted as a single predicate.
-	# shellcheck disable=SC2086
-	repos="$(find . $maxdepth -type d -name .git -prune \
-		| sed -e 's:/\.git$::' -e 's:^\./::' | sort)"
-else
-	repos="$*"
-fi
+# Cheers to e36freak of #bash@libera.chat for help with the `find`.
+# There are no quotes around $maxdepth so that "-maxdepth 2" isn't interpreted
+# as a single predicate.
+# shellcheck disable=SC2086
+repos="$(find $directories $maxdepth -type d -name .git -prune \
+	| sed -e 's:/\.git$::' -e 's:^\./::' | sort)"
 
-for dir in $repos; do
+for repo in $repos; do
 
-	st="$(git -C "$dir" -c color.status=always status -sb)"
+	st="$(git -C "$repo" -c color.status=always status -sb)"
 
 	if [ "$(echo "$st" | wc -l)" -ge 2 ] || echo "$st" | grep -q ']$'; then
-		echo "$dir $st"
+		echo "$repo $st"
 	fi
 done
