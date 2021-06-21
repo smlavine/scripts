@@ -7,7 +7,7 @@
 # Arguments:   Markdown files to view
 
 cols="$(tput cols)"
-tabwidth="$(infocmp "$TERM" | grep -o 'it.[0-9]*' | tr -dc '0-9')"
+tabwidth="$(infocmp "$TERM" | grep -o 'it#[0-9]*' | tr -dc '0-9')"
 
 # $@ is meant to be unquoted here, to pass several files as arguments to fold.
 # shellcheck disable=SC2068
