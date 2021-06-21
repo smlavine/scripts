@@ -28,8 +28,8 @@ shift $((OPTIND - 1))
 [ "$#" -eq 0 ] && directories='.' || directories="$*"
 
 # Cheers to e36freak of #bash@libera.chat for help with the `find`.
-# There are no quotes around $maxdepth so that "-maxdepth 2" isn't interpreted
-# as a single predicate.
+# $directories and $maxdepth each potentially contain multiple arguments and
+# are intentionally unquoted.
 # shellcheck disable=SC2086
 repos="$(find $directories $maxdepth -type d -name .git -prune \
 	| sed -e 's:/\.git$::' -e 's:^\./::' | sort)"
