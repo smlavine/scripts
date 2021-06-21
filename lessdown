@@ -1,0 +1,27 @@
+#!/bin/sh
+# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
+# Licensed under the MIT license. See MIT.txt for details.
+#
+# File:        lessdown
+# Description: Format the given Markdown file(s) to view in less.
+# Arguments:   Markdown files to view
+
+cols="$(tput cols)"
+tabwidth="$(infocmp "$TERM" | grep -o 'it.[0-9]*' | tr -dc '0-9')"
+
+# $@ is meant to be unquoted here, to pass several files as arguments to fold.
+# shellcheck disable=SC2068
+fold -sw "$((cols - tabwidth - 2))" $@ | awk '{
+
+if (substr($0,1,2) == "##") {
+	# Print non-top-level headings in blue
+	print "\033[;34m" $0 "\033[0m"
+} else if (substr($0,1,1) == "#") {
+	# Print top-level headings in bold blue
+	print "\033[1;34m" $0 "\033[0m"
+} else {
+	# Indent regular lines, as man pages are shown
+	print "\t" $0
+}
+
+}' | less -R
