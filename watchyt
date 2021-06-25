@@ -13,9 +13,6 @@ usage()
 	printf "USAGE: watchyt [-cd] [url]\n"
 }
 
-dpywidth=$(xdpyinfo | awk '/dimensions/ {print $2}' | cut -d'x' -f1)
-dpyheight=$(xdpyinfo | awk '/dimensions/ {print $2}' | cut -d'x' -f2)
-
 while getopts "cdh" o; do
 	case "$o" in
 		c) url="$(xclip -selection c -o)" ;;
@@ -63,7 +60,7 @@ elif [ "$description" ]; then
 	rm "$descfile" # Once less is closed, then delete file.
 
 else
-	mpv --ytdl-raw-options=format="best[height<=?$dpyheight][width<=?$dpywidth]" \
+	mpv --ytdl-raw-options=format="bestvideo[height<=?1080]+bestaudio" \
 		ytdl://"$url"
 
 fi
