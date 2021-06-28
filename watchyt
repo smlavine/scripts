@@ -61,7 +61,7 @@ elif [ "$description" ]; then
 
 else
 	mpv --ytdl-raw-options=format="bestvideo[height<=?1080]+bestaudio" \
-		ytdl://"$url"
+		"$url"
 
 fi
 
