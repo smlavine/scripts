@@ -6,12 +6,12 @@
 # Description: Quits dwm, but first prompts the user with a dmenu prompt asking
 #              if they are sure.
 
-if [ "$(printf "Y\nN" | dmenu -i -p "Are you sure?")" = "Y" ]
+if [ "$(printf "Y\nN" | dmenu -i -sb 'dark red' -p "Are you sure?")" = "Y" ]
 then
 
 	ps --sort -etime a o pid,etime,tty,comm |
 		grep ' dwm$' |
-		dmenu -n -l 6 -p "Which one?" |
+		dmenu -n -l 6 -sb 'dark green' -p "Which one?" |
 		sed 's/^ *//' | cut -d' ' -f1 | # ps(1) outputs leading spaces
 		xargs kill
 
