@@ -22,4 +22,3 @@ licensed under the GPLv3.
 Contact
 =======
 To contact me, Sebastian LaVine, send an email to <mail@smlavine.com>.
-
