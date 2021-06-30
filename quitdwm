@@ -9,20 +9,10 @@
 if [ "$(printf "Y\nN" | dmenu -i -p "Are you sure?")" = "Y" ]
 then
 
-	# who output is sorted by the time the tty was logged into. As I do not
-	# think there is a way to detect which actual tty the user is logged into
-	# if they are using a virtual terminal in an X session, we will guess by
-	# killing the dwm instance in the most recent tty the user has logged into,
-	# if it has a dwm instance there.
+	ps --sort -etime a o pid,etime,tty,comm |
+		grep ' dwm$' |
+		dmenu -n -l 6 -p "Which one?" |
+		sed 's/^ *//' | cut -d' ' -f1 | # ps(1) outputs leading spaces
+		xargs kill
 
-	# A list of the ttys with an instance of dwm running in them, separated by
-	# '|' for use by grep.
-	dwmttys="$(ps a | tr -s ' ' | grep ' dwm$' | cut -d' ' -f3 | \
-		tr '\n' '|' | sed 's/|$//')"
-
-	userttys="$(who | grep "^$USER" | tr -s ' ' | cut -d' ' -f2)"
-
-	ttykill="$(echo "$userttys" | grep -E "$dwmttys" | tail -1)"
-
-	kill "$(ps a | tr -s ' ' | grep "$ttykill" | grep ' dwm$' | cut -d' ' -f2)"
 fi
