@@ -1,21 +1,21 @@
 scripts
 =======
 These are various scripts that I use on my system. They are deployed by
-[smlss](https://git.smlavine.com/smlss).
+[smlss](https://sr.ht/~smlavine/smlss).
 
 Copyright
 =========
 See the headers of individual files for copyright information. All are licensed
 under either the terms of the MIT license or the GPLv3. See
-[MIT.txt](https://git.smlavine.com/?p=smlss/scripts;a=blob;f=MIT.txt;hb=HEAD)
+[MIT.txt](https://git.sr.ht/~smlavine/scripts/tree/master/item/MIT.txt)
 and
-[GPLv3.txt](https://git.smlavine.com/?p=smlss/scripts;a=blob;f=GPLv3.txt;hb=HEAD)
+[GPLv3.txt](https://git.sr.ht/~smlavine/scripts/tree/master/item/GPLv3.txt)
 for specifics.
 
 Contrib
 =======
 The file
-[extract](https://git.smlavine.com/?p=smlss/scripts;a=blob;f=extract;hb=HEAD)
+[extract](https://git.sr.ht/~smlavine/scripts/tree/master/item/src/extract)
 was originally written by [Luke Smith](https://github.com/lukesmithxyz), and is
 licensed under the GPLv3.
 
