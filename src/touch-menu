@@ -21,6 +21,9 @@ run()
 	esac
 
 	xrandr -o "$way" || exit $?
+
+	# Without this command, the touch screen inputs do not match up with
+	# the new orientation of the screen.
 	xinput --set-prop 'Wacom ISDv4 E6 Pen Pen (0)' \
 		'Coordinate Transformation Matrix' $matrix
 }
