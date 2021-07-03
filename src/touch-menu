@@ -8,30 +8,4 @@
 #              environments, such as when the keyboard is unavailable in a
 #              laptop with tablet capabilities like the Thinkpad X220 Tablet.
 
-run()
-{
-	way="$(dmenu -c -i -l 5 -fn 'monospace:size=50' -p 'Which way?' |
-		tr '[:upper:]' '[:lower:]')"
-	case "$way" in
-		left)     matrix="0 -1 1 1 0 0 0 0 1"  ;;
-		right)    matrix="0 1 0 -1 0 1 0 0 1"  ;;
-		inverted) matrix="-1 0 1 0 -1 1 0 0 1" ;;
-		normal)   matrix="1 0 0 0 1 0 0 0 1"   ;;
-		*)   exit 0 ;;
-	esac
-
-	xrandr -o "$way" || exit $?
-
-	# Without this command, the touch screen inputs do not match up with
-	# the new orientation of the screen.
-	xinput --set-prop 'Wacom ISDv4 E6 Pen Pen (0)' \
-		'Coordinate Transformation Matrix' $matrix
-}
-
-run << EOF
-Left
-Right
-Inverted
-Normal
-*Cancel*
-EOF
+rotate-screen
