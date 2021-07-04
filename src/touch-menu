@@ -8,7 +8,7 @@
 #              environments, such as when the keyboard is unavailable in a
 #              laptop with tablet capabilities like the Thinkpad X220 Tablet.
 
-rotate-screen()
+rotate_screen()
 {
 	way="$(dmenu -c -i -l 5 -fn 'monospace:size=50' -p 'Which way?' |
 		tr '[:upper:]' '[:lower:]')"
@@ -34,8 +34,8 @@ main()
 		-p 'What to do?')"
 	[ "$item" = "*Cancel*" ] && exit 0
 	case "$item" in
-		rotate-screen)
-			rotate-screen <<- EOF
+		'Rotate Screen')
+			rotate_screen <<- EOF
 			Left
 			Right
 			Inverted
@@ -48,7 +48,7 @@ main()
 }
 
 main << EOF
-rotate-screen
+Rotate Screen
 xournalpp
 svkbd-en
 *Cancel*
