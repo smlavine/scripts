@@ -8,6 +8,14 @@
 #              environments, such as when the keyboard is unavailable in a
 #              laptop with tablet capabilities like the Thinkpad X220 Tablet.
 
+quit_a_program()
+{
+	ps --sort +etime o pid,tty,etime,comm |
+		dmenu -i -c -l 30 -sb 'dark blue' -p 'Which one?' |
+		awk '{ print $1 }' |
+		xargs kill
+}
+
 rotate_screen()
 {
 	way="$(dmenu -c -i -l 5 -fn 'monospace:size=50' -p 'Which way?' |
@@ -43,6 +51,9 @@ main()
 			*Cancel*
 			EOF
 			;;
+		'Quit a Program')
+			quit_a_program
+			;;
 		*)
 			# Execute the item as a shell command. There are
 			# deliberately no quotes here to parse options and
@@ -56,5 +67,6 @@ main << EOF
 Rotate Screen
 xournalpp
 svkbd-en -d
+Quit a Program
 *Cancel*
 EOF
