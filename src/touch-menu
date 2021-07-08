@@ -50,6 +50,6 @@ main()
 main << EOF
 Rotate Screen
 xournalpp
-svkbd-en
+svkbd-en -d
 *Cancel*
 EOF
