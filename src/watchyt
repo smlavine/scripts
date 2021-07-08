@@ -60,7 +60,7 @@ elif [ "$description" ]; then
 	rm "$descfile" # Once less is closed, then delete file.
 
 else
-	mpv --ytdl-format="bestvideo[height<=?1080]+bestaudio" "$url"
+	mpv --ytdl-format="bestvideo[height<=?1080]+bestaudio/best" "$url"
 
 fi
 
