@@ -43,8 +43,13 @@ main()
 			*Cancel*
 			EOF
 			;;
+		*)
+			# Execute the item as a shell command. There are
+			# deliberately no quotes here to parse options and
+			# arguments properly.
+			$item
+			;;
 	esac
-	"$item"
 }
 
 main << EOF
