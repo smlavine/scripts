@@ -67,6 +67,7 @@ main << EOF
 Rotate Screen
 xournalpp
 svkbd-en -d
+pithos
 Quit a Program
 *Cancel*
 EOF
