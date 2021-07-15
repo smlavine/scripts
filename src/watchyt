@@ -55,7 +55,7 @@ elif [ "$description" ]; then
 		youtube-dl --get-title "$url"
 		echo "----------------"
 		youtube-dl --get-description "$url"
-	} >> "$descfile"
+	} | fold -s >> "$descfile"
 	st -e less "$descfile"
 	rm "$descfile" # Once less is closed, then delete file.
 
