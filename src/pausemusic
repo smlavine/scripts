@@ -3,8 +3,8 @@
 # Licensed under the MIT license. See MIT.txt for details.
 #
 # File:        pausemusic
-# Description: Toggles music playback, if music is playing in either pianobar or
-#              cmus. 
+# Description: Toggles music playback, if music is playing in either pianobar
+#              or cmus.
 
 pidof cmus && cmus-remote -u
 pidof pianobar && printf ' ' > ~/.config/pianobar/ctl

@@ -6,7 +6,8 @@
 # Description: Sums the length of given audio files.
 # Arguments:   Audio files to sum the duration of
 
-mediainfo "$@" | \
-	grep Duration | tr -s ' ' | cut -d' ' -f'3,5' | \
+mediainfo "$@" |
+	grep Duration | tr -s ' ' | cut -d' ' -f'3,5' |
 	awk 'NR % 2 != 1 { sum += $2; sum += $1*60 }
-	END { printf "%dh%dm%ds\n", sum / (60*60), sum % (60*60) / 60, sum % 60 } '
+	END { printf "%dh%dm%ds\n",
+		sum / (60*60), sum % (60*60) / 60, sum % 60 }'
