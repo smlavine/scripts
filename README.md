@@ -7,7 +7,7 @@ All scripts are located in the ```src/``` directory.
 
 To install the scripts, simply run ```make``` or ```make install```.
 
-To uninstall the dotfiles, run ```make uninstall```.
+To uninstall the scripts, run ```make uninstall```.
 
 Copyright
 =========
