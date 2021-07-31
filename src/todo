@@ -22,7 +22,28 @@ curl -s "$url" |
 	xargs curl -s |
 	awk -v url="$url" '
 	BEGIN { print "# " url "\n" }
-	/<title>/ { title = !title; next }
-	title { title = !title; gsub("^ *", "# "); print $0 }
-	/class="markdown"/ { gsub("^.*<p>",""); gsub("</p>$",""); print $0 }
+	/<title>/ {
+		title = !title;
+		next;
+	}
+	title {
+		# We are only reading the first line of the title because the
+		# next two lines are just " - \nsourcehut todo".
+		title = !title;
+		gsub("^ *", "# ");
+		print $0;
+	}
+	/<div class="markdown">/ {
+		desc = !desc;
+		gsub("^.*<p>","");
+	}
+	desc {
+		if ($0 ~ /^<\/div>/) {
+			desc = !desc;
+			next;
+		}
+		gsub("^<p>","");
+		gsub("</p>$","");
+		print $0;
+	}
 	/<\/html>/ { print "" }'
