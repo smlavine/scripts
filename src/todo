@@ -1,0 +1,28 @@
+#!/bin/sh
+# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
+# Licensed under the MIT license. See MIT.txt for details.
+#
+# File:        todo
+# Description: Parse a todo.sr.ht issue tracker and display it in Markdown.
+# Arguments:   Issue tracker to display, for example '~smlavine/navipage'.
+
+prefix='https://todo.sr.ht/'
+
+# If $1 contains $prefix, then use it as the entire url;
+# otherwise, concatenate it to $prefix to get the full url.
+test "${1#*$prefix}" != "$1" &&
+	url="$1" ||
+	url="$prefix$1"
+
+curl -s "$url" |
+	grep '[0-9]*">#[0-9]*</a>' |
+	sed -e 's:^<a href="/::' -e 's:">.*</a>$::' |
+	xargs -L1 printf '%s%s\n' "$prefix" |
+	grep -v "^$prefix$" | # Don't pipe if tracker isn't found
+	xargs -L1 curl -s |
+	awk -v url="$url" '
+	BEGIN { print "# " url "\n" }
+	/<title>/ { title = !title; next }
+	title { title = !title; gsub("^ *", "# "); print $0 }
+	/class="markdown"/ { gsub("^.*<p>",""); gsub("</p>$",""); print $0 }
+	/<\/html>/ { print "" }'
