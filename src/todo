@@ -19,7 +19,7 @@ curl -s "$url" |
 	sed -e 's:^<a href="/::' -e 's:">.*</a>$::' |
 	xargs -L1 printf '%s%s\n' "$prefix" |
 	grep -v "^$prefix$" | # Don't pipe if tracker isn't found
-	xargs -L1 curl -s |
+	xargs curl -s |
 	awk -v url="$url" '
 	BEGIN { print "# " url "\n" }
 	/<title>/ { title = !title; next }
