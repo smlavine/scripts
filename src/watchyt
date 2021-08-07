@@ -42,7 +42,7 @@ else
 fi
 
 # Remove any chars that are not letters, numbers, or punctuation from the url.
-url="$(printf "%s" "$url" | tr -cd '[:alnum:][:punct:]' )"
+url="$(printf "%s" "$url" | tr -cd '[:alnum:][:punct:]')"
 
 if [ -z "$url" ]; then
 	usage
