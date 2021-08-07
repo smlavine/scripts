@@ -60,7 +60,15 @@ elif [ "$description" ]; then
 	rm "$descfile" # Once less is closed, then delete file.
 
 else
-	mpv --ytdl-format="bestvideo[height<=?1080]+bestaudio/best" "$url"
-
+	errfile="$(mktemp)"
+	mpv "$url" \
+		--log-file="$errfile" \
+		--ytdl-format="bestvideo[height<=?1080]+bestaudio/best"
+	if [ -s "$errfile" ]; then
+		grep -E 'ERROR' "$errfile" |
+			sed 's/^.*\] //' |
+			xargs -Ix dunstify -u 2 -t 5000 x
+	fi
+	rm "$errfile"
 fi
 
