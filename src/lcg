@@ -17,5 +17,8 @@ window="$(tabbed -d)"
 echo "$window"
 
 for file in $servers; do
+	# TODO: exit code 69 (EX_UNAVAILABLE) to detect if catgirl exited
+	# because it couldn't keep a connection with the server. See release
+	# notes for catgirl 1.9.
 	st -w "$window" -e catgirl "$file" &
 done
