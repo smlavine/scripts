@@ -33,7 +33,7 @@ if [ "$url" ]; then
 	printf "%s" "$url" | xclip -selection c -i
 else
 	if [ "$#" -eq 0 ]; then
-		URL_PREFIX="ytsearch:"
+		URL_PREFIX="ytdl://ytsearch:"
 		url="$(dmenu -p 'Search for:' </dev/null)"
 		[ "$url" ] && url="$URL_PREFIX$url"
 	else
