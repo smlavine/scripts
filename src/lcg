@@ -12,7 +12,7 @@ catgirl_configs="${CATGIRL_DIR:-$XDG_CONFIG_HOME/catgirl/dev}"
 [ "$#" -gt 0 ] && servers="$*" \
 	|| servers="$(find "$catgirl_configs" -type f)"
 
-window="$(tabbed -d)"
+window="$(tabbed -cd)"
 
 echo "$window"
 
