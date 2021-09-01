@@ -32,8 +32,10 @@ rotate_screen()
 
 	# Without this command, the touch screen inputs do not match up with
 	# the new orientation of the screen.
+	# shellcheck disable=SC2086
 	xinput --set-prop 'Wacom ISDv4 E6 Pen Pen (0)' \
 		'Coordinate Transformation Matrix' $matrix
+	# shellcheck disable=SC2086
 	xinput --set-prop 'Wacom ISDv4 E6 Pen Eraser (0)' \
 		'Coordinate Transformation Matrix' $matrix
 }
