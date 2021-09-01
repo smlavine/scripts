@@ -42,7 +42,14 @@ rotate_screen()
 
 main()
 {
-	item="$(dmenu -c -i -l 20 -fn 'monospace:size=50' -p 'What to do?')"
+	if [ "$#" -ne 0 ]; then
+		item="$1"
+		shift
+	else
+		item="$(dmenu -c -i -l 20 -fn 'monospace:size=50' \
+			-p 'What to do?')"
+	fi
+
 	[ "$item" = "*Cancel*" ] && exit 0
 	case "$item" in
 		'Rotate Screen')
@@ -66,7 +73,7 @@ main()
 	esac
 }
 
-main << EOF
+main "$@" << EOF
 Rotate Screen
 xournalpp
 svkbd-en
