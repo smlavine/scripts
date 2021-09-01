@@ -42,8 +42,7 @@ rotate_screen()
 
 main()
 {
-	item="$(dmenu -c -i -l 20 -fn 'monospace:size=50' \
-		-p 'What to do?')"
+	item="$(dmenu -c -i -l 20 -fn 'monospace:size=50' -p 'What to do?')"
 	[ "$item" = "*Cancel*" ] && exit 0
 	case "$item" in
 		'Rotate Screen')
