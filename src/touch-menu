@@ -18,8 +18,15 @@ quit_a_program()
 
 rotate_screen()
 {
-	way="$(dmenu -c -i -l 5 -fn 'monospace:size=50' -p 'Which way?' |
-		tr '[:upper:]' '[:lower:]')"
+	if [ "$#" -ne 0 ]; then
+		way="$1"
+		shift
+	else
+		way="$(dmenu -c -i -l 5 \
+			-fn 'monospace:size=50' -p 'Which way?' |
+			tr '[:upper:]' '[:lower:]')"
+	fi
+
 	case "$way" in
 		left)     matrix="0 -1 1 1 0 0 0 0 1"  ;;
 		right)    matrix="0 1 0 -1 0 1 0 0 1"  ;;
@@ -53,7 +60,7 @@ main()
 	[ "$item" = "*Cancel*" ] && exit 0
 	case "$item" in
 		'Rotate Screen')
-			rotate_screen <<- EOF
+			rotate_screen "$@" <<- EOF
 			Left
 			Right
 			Inverted
