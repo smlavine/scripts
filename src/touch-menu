@@ -32,7 +32,7 @@ rotate_screen()
 		right)    matrix="0 1 0 -1 0 1 0 0 1"  ;;
 		inverted) matrix="-1 0 1 0 -1 1 0 0 1" ;;
 		normal)   matrix="1 0 0 0 1 0 0 0 1"   ;;
-		*)   exit 0 ;;
+		*) exit 1 ;;
 	esac
 
 	xrandr -o "$way" || exit $?
