@@ -22,9 +22,29 @@ rotate_screen()
 		way="$1"
 		shift
 	else
-		way="$(dmenu -c -i -l 5 \
+		way="$(dmenu -c -i -l 6 \
 			-fn 'monospace:size=50' -p 'Which way?' |
 			tr '[:upper:]' '[:lower:]')"
+	fi
+
+	if [ "$way" = 'toggle' ]; then
+		# Rotate the screen to be the opposite of how it currently is
+		# oriented. If it is oriented normal, rotate it inverted;
+		# if inverted, normal; if left, right; if right, left.
+
+		current="$(xrandr | grep ' connected' | cut -d' ' -f5)"
+
+		# This xrandr field is either 'left', 'right', or 'inverted'.
+		# In normal orientation, nothing is in this field, so the next
+		# field, '(normal', is collected.
+		case "$current" in
+			left)     rotate_screen 'right'    ;;
+			right)    rotate_screen 'left'     ;;
+			inverted) rotate_screen 'normal'   ;;
+			*)        rotate_screen 'inverted' ;;
+		esac
+
+		exit 0 # Don't continue with function; called recursively above
 	fi
 
 	case "$way" in
@@ -65,6 +85,7 @@ main()
 			Right
 			Inverted
 			Normal
+			Toggle
 			*Cancel*
 			EOF
 			;;
