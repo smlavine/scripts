@@ -1,0 +1,11 @@
+#!/bin/sh
+# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com
+# Licensed under the MIT license. See MIT.txt for details.
+#
+# File:        download
+# Description: Downloads the given URLs.
+# Arguments:   URLs to download.
+
+for file in $@; do
+	curl -LO "$file"
+done
