@@ -57,6 +57,9 @@ rotate_screen()
 
 	xrandr -o "$way" || exit $?
 
+	# TODO: fix issue where the transformation matrix is not changed if
+	# the pen or eraser have not yet had contact with the screen during
+	# this session.
 	# Without this command, the touch screen inputs do not match up with
 	# the new orientation of the screen.
 	# shellcheck disable=SC2086
