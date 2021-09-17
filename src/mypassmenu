@@ -7,6 +7,6 @@
 #              from.
 
 ( cd $PASSWORD_STORE_DIR;
-find -name '*.gpg' | sed -e 's:^./::' -e 's/\.gpg$//' | sort ) |
+find . -name '*.gpg' | sed -e 's:^./::' -e 's/\.gpg$//' | sort ) |
 	dmenu -i -c -fn 20 -sb '#b00' -l 30 |
 	xargs pass show -c 2>/dev/null
