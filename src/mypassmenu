@@ -3,7 +3,8 @@
 # Licensed under the MIT license. See MIT.txt for details.
 #
 # File:        mypassmenu
-# Description: Opens a stylized dmenu prompt with passwords to select from.
+# Description: Opens a stylized dmenu prompt with passwords to select
+#              from.
 
 ( cd $PASSWORD_STORE_DIR;
 find -name '*.gpg' | sed -e 's:^./::' -e 's/\.gpg$//' | sort ) |
