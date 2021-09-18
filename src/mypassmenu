@@ -6,7 +6,9 @@
 # Description: Opens a stylized dmenu prompt with passwords to select
 #              from.
 
-( cd $PASSWORD_STORE_DIR;
-find . -name '*.gpg' | sed -e 's:^./::' -e 's/\.gpg$//' | sort ) |
+# The directory containing the passwords.
+passdir="${PASSWORD_STORE_DIR-~/.password-store}"
+
+find "$passdir" -name '*.gpg' | sed -e "s:^$passdir/::" -e 's/\.gpg$//' | sort |
 	dmenu -i -c -fn 20 -sb '#b00' -l 30 |
 	xargs pass show -c 2>/dev/null
