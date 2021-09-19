@@ -4,11 +4,53 @@
 #
 # File:        mypassmenu
 # Description: Opens a stylized dmenu prompt with passwords to select
-#              from.
+#              from. Passwords are sorted according to the weight
+#              value attached to them in $weights. Each time a
+#              password is used, its weight increases by one, so that
+#              over time the most used passwords take the least amount
+#              of time to choose from the dmenu prompt.
+
 
 # The directory containing the passwords.
 passdir="${PASSWORD_STORE_DIR-~/.password-store}"
 
-find "$passdir" -name '*.gpg' | sed -e "s:^$passdir/::" -e 's/\.gpg$//' | sort |
-	dmenu -i -c -fn 20 -sb '#b00' -l 30 |
-	xargs pass show -c 2>/dev/null
+# File containing all expected password entries and their respective weights.
+# Expected format (fields separated by tabs):
+# logins/sr.ht/smlavine	59
+# logins/aur.archlinux.org/smlavine	4
+# logins/github.com/smlavine	0
+weights="$XDG_DATA_HOME/mypassmenu.tsv"
+
+# File listing all passwords in the password store.
+entries="$(mktemp)"
+find "$passdir" -name '*.gpg' | sed -e "s:^$passdir/::" -e 's/\.gpg$//' \
+	> "$entries"
+
+# If an entry is in "$entries" xor "$weights", then it has either been
+# added to or removed from the password store since the last invocation.
+
+cut -f1 "$weights" "$entries" | sort | uniq -u | while read -r entry;
+do
+	if grep -q "^$entry$" "$entries"; then
+		# If $entry is in the password list, then it is
+		# a new password that has not yet been added to
+		# the weight file.
+		# Add it.
+		printf '%s\t0\n' "$entry" >> "$weights"
+	else
+		# If $entry is not in the password list, then it
+		# is a password that has been removed from pass
+		# and not yet removed from the weight file.
+		# Remove it.
+		grep -v "^$entry	" "$weights" | sponge "$weights"
+	fi
+done
+
+pw="$(sort -rnk 2 "$weights" | cut -f1 | dmenu -i -c -fn 20 -sb '#b00' -l 30)"
+
+pass show -c "$pw"
+
+# Increment the weight of the password chosen.
+awk -v pw="$pw" \
+	'$1 == pw { print $1 "\t" $2+1; next } { print $0 }' "$weights" |
+	sponge "$weights"
