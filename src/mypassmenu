@@ -51,6 +51,5 @@ pw="$(sort -rnk 2 "$weights" | cut -f1 | dmenu -i -c -fn 20 -sb '#b00' -l 30)"
 pass show -c "$pw"
 
 # Increment the weight of the password chosen.
-awk -v pw="$pw" \
-	'$1 == pw { print $1 "\t" $2+1; next } { print $0 }' "$weights" |
+awk '$1 == "'"$pw"'" { print $1 "\t" $2+1; next } { print $0 }' "$weights" |
 	sponge "$weights"
