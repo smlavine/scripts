@@ -19,7 +19,7 @@ passdir="${PASSWORD_STORE_DIR-~/.password-store}"
 # logins/sr.ht/smlavine	59
 # logins/aur.archlinux.org/smlavine	4
 # logins/github.com/smlavine	0
-weights="$XDG_DATA_HOME/mypassmenu.tsv"
+weights="${MYPASSMENU_WEIGHTS-$XDG_DATA_HOME/mypassmenu.tsv}"
 
 # File listing all passwords in the password store.
 entries="$(mktemp)"
