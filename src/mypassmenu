@@ -17,7 +17,7 @@ passdir="${PASSWORD_STORE_DIR-~/.password-store}"
 # File containing all expected password entries and their respective weights.
 # Expected format (fields separated by tabs):
 # logins/sr.ht/smlavine	59
-# logins/aur.archlinux.org/smlavine	4
+# logins/aur.archlinux.org/smlavine	4	comment about this line
 # logins/github.com/smlavine	0
 weights="${MYPASSMENU_WEIGHTS-$XDG_DATA_HOME/mypassmenu.tsv}"
 
