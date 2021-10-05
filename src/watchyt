@@ -50,12 +50,14 @@ if [ -z "$url" ]; then
 
 elif [ "$description" ]; then
 	descfile="$(mktemp watchyt.XXXXXXXX -p /tmp)"
-	{
-		echo "$url"
-		youtube-dl --get-title "$url"
-		echo "----------------"
-		youtube-dl --get-description "$url"
-	} | fold -s >> "$descfile"
+
+	# The order of these fields is important for the printf statement to
+	# work correctly.
+	jqs='.id, .title, .uploader, .upload_date, .view_count, .description'
+	format="https://youtu.be/%s\n%s\nUploaded by %s on %s\n%'d views\n---\n%s\n"
+	youtube-dl -j "$url" | jq "$jqs" | xargs printf "$format" |
+		sed 's/\\n/\n/g' > "$descfile"
+
 	st -e lessdown "$descfile"
 	rm "$descfile" # Once less is closed, then delete file.
 
