@@ -53,7 +53,7 @@ elif [ "$description" ]; then
 
 	# The order of these fields is important for the printf statement to
 	# work correctly.
-	jqs='.id, .title, .uploader, .upload_date, .view_count, .description'
+	jqs='.id, .title, .uploader, (.upload_date | strptime("%Y%m%d") | mktime | strftime("%A, %b. %d, %Y")), .view_count, .description'
 	format="https://youtu.be/%s\n%s\nUploaded by %s on %s\n%'d views\n---\n%b\n"
 	yt-dlp -j "$url" | jq "$jqs" | xargs printf "$format" > "$descfile"
 
