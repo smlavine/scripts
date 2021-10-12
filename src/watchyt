@@ -54,9 +54,8 @@ elif [ "$description" ]; then
 	# The order of these fields is important for the printf statement to
 	# work correctly.
 	jqs='.id, .title, .uploader, .upload_date, .view_count, .description'
-	format="https://youtu.be/%s\n%s\nUploaded by %s on %s\n%'d views\n---\n%s\n"
-	yt-dlp -j "$url" | jq "$jqs" | xargs printf "$format" |
-		sed 's/\\n/\n/g' > "$descfile"
+	format="https://youtu.be/%s\n%s\nUploaded by %s on %s\n%'d views\n---\n%b\n"
+	yt-dlp -j "$url" | jq "$jqs" | xargs printf "$format" > "$descfile"
 
 	st -e lessdown "$descfile"
 	rm "$descfile" # Once less is closed, then delete file.
