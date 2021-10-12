@@ -55,7 +55,7 @@ elif [ "$description" ]; then
 	# work correctly.
 	jqs='.id, .title, .uploader, .upload_date, .view_count, .description'
 	format="https://youtu.be/%s\n%s\nUploaded by %s on %s\n%'d views\n---\n%s\n"
-	youtube-dl -j "$url" | jq "$jqs" | xargs printf "$format" |
+	yt-dlp -j "$url" | jq "$jqs" | xargs printf "$format" |
 		sed 's/\\n/\n/g' > "$descfile"
 
 	st -e lessdown "$descfile"
@@ -63,7 +63,8 @@ elif [ "$description" ]; then
 
 else
 	errfile="$(mktemp)"
-	mpv --ytdl-format="bestvideo[height<=?1080]+bestaudio/best" \
+	mpv --script-opts=ytdl_hook-ytdl_path=yt-dlp \
+		--ytdl-format="bestvideo[height<=?1080]+bestaudio/best" \
 		--log-file="$errfile" "$url"
 	if [ -s "$errfile" ]; then
 		grep -E 'ERROR' "$errfile" |
