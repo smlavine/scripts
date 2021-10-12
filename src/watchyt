@@ -63,9 +63,8 @@ elif [ "$description" ]; then
 
 else
 	errfile="$(mktemp)"
-	mpv "$url" \
-		--log-file="$errfile" \
-		--ytdl-format="bestvideo[height<=?1080]+bestaudio/best"
+	mpv --ytdl-format="bestvideo[height<=?1080]+bestaudio/best" \
+		--log-file="$errfile" "$url"
 	if [ -s "$errfile" ]; then
 		grep -E 'ERROR' "$errfile" |
 			sed 's/^.*\] //' |
