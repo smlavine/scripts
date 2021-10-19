@@ -4,8 +4,10 @@
 #
 # File:        download
 # Description: Downloads the given URLs.
+# Options:     -r        Download the URL recursively using wget. User
+#                        discretion is advised.
 # Arguments:   URLs to download.
 
-for file in $@; do
+for file in "$@"; do
 	curl -LO "$file"
 done
