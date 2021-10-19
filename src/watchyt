@@ -10,7 +10,7 @@
 
 usage()
 {
-	printf "USAGE: watchyt [-cd] [url]\n"
+	echo "USAGE: watchyt [-cd] [url]"
 }
 
 while getopts "cdh" o; do
