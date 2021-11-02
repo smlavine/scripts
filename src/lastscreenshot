@@ -7,7 +7,7 @@
 #              screenshots to be viewed.
 
 # Directory containing the screenshots.
-screenshot_path="$HOME/Documents/pictures/screenshots/"
+screenshot_path="${SCREENSHOT_DIR:-"$HOME/Documents/pictures/screenshots/"}"
 
 cd "$screenshot_path" || exit
 
