@@ -1,0 +1,29 @@
+#!/bin/sh
+# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
+# Licensed under the MIT license. See MIT.txt for details.
+#
+# File:        jdkdocs
+# Description: Prompts the user with dmenu for a file to view from
+#              offline JDK documentation.
+
+docs_location="$HOME/Documents/code/documents/"
+docs="jdk"
+
+cd "$docs_location" || exit 1
+
+# File names are sorted by their length, so that files with shorter
+# names are first, because this way search results are effectively
+# sorted by the percentage of the file name that is made up by the
+# query.
+
+# In the xargs command, the input is tested first so that firefox will
+# open only if a path is provided from dmenu. If instead <ESC> is
+# pressed and no file is chosen, then firefox won't open.
+# The -r option is not used because it is not portable.
+
+find "$docs" -name '*.html' |
+	awk '{ print length(), $0 }' |
+	sort -n |
+	cut -d' ' -f2- |
+	dmenu -p 'Which file? ' -l 20 |
+	xargs -I '{}' sh -c 'test {} && firefox {}'
