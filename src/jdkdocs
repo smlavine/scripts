@@ -25,5 +25,5 @@ find "$docs" -name '*.html' |
 	awk '{ print length(), $0 }' |
 	sort -n |
 	cut -d' ' -f2- |
-	dmenu -p 'Which file? ' -l 20 |
+	dmenu -i -p 'Which file? ' -l 20 |
 	xargs -I '{}' sh -c 'test {} && firefox {}'
