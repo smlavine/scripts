@@ -108,7 +108,6 @@ main "$@" << EOF
 Rotate Screen
 xournalpp
 svkbd-en
-pithos
 pavucontrol
 Quit a Program
 *Cancel*
