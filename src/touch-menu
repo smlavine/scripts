@@ -8,6 +8,27 @@
 #              environments, such as when the keyboard is unavailable in a
 #              laptop with tablet capabilities like the Thinkpad X220 Tablet.
 
+change_brightness()
+{
+	until [ "$args" = '*Done*' ]; do
+		# This will display the current brightness level
+		# before any choice is made by the user.
+		# shellcheck disable=SC2086
+		mylight $args
+		menu='-A 5\n-U 5\n-A 1\n-U 1\n-S 100\n-S 2\n*Done*\n'
+		args="$(dmenu -c -i -l 7 -fn 'monospace:size=50' <<- EOF
+		-A 5
+		-U 5
+		-A 1
+		-U 1
+		-S 100
+		-S 2
+		*Done*
+		EOF
+		)"
+	done
+}
+
 quit_a_program()
 {
 	ps --sort +etime o pid,tty,etime,comm |
@@ -92,6 +113,9 @@ main()
 			*Cancel*
 			EOF
 			;;
+		'Change Brightness')
+			change_brightness
+			;;
 		'Quit a Program')
 			quit_a_program
 			;;
@@ -108,6 +132,7 @@ main "$@" << EOF
 Rotate Screen
 xournalpp
 svkbd-en
+Change Brightness
 pavucontrol
 Quit a Program
 *Cancel*
