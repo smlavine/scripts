@@ -15,7 +15,6 @@ change_brightness()
 		# before any choice is made by the user.
 		# shellcheck disable=SC2086
 		mylight $args
-		menu='-A 5\n-U 5\n-A 1\n-U 1\n-S 100\n-S 2\n*Done*\n'
 		args="$(dmenu -c -i -l 7 -fn 'monospace:size=50' <<- EOF
 		-A 5
 		-U 5
