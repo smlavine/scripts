@@ -31,7 +31,7 @@ change_brightness()
 
 quit_a_program()
 {
-	ps --sort +etime o pid,tty,etime,comm |
+	ps --sort +etime o pid,tty,etime,args |
 		dmenu -i -c -l 30 -sb 'dark blue' -p 'Which one?' |
 		awk '{ print $1 }' |
 		xargs kill
