@@ -13,8 +13,6 @@ then
 	ps --sort -etime a o pid,etime,tty,comm |
 		grep ' dwm$' |
 		dmenu -n -l 6 -sb 'dark green' -p "Which one?" |
-		sed 's/^ *//' | # ps(1) outputs leading spaces
-		cut -d' ' -f1 |
+		awk '{ print $1 }' |
 		xargs kill
-
 fi
