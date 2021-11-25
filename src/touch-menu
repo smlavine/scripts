@@ -10,7 +10,7 @@
 
 change_brightness()
 {
-	until [ "$args" = '*Done*' ]; do
+	while true; do
 		# This will display the current brightness level
 		# before any choice is made by the user.
 		# shellcheck disable=SC2086
@@ -25,6 +25,7 @@ change_brightness()
 		*Done*
 		EOF
 		)"
+		[ "$args" = '*Done*' ] || [ "$args" = '' ] && break
 	done
 }
 
