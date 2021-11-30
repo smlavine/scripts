@@ -29,14 +29,6 @@ change_brightness()
 	done
 }
 
-quit_a_program()
-{
-	ps --sort +etime o pid,tty,etime,args |
-		dmenu -i -c -l 30 -sb 'dark blue' -p 'Which one?' |
-		awk '{ print $1 }' |
-		xargs kill
-}
-
 rotate_screen()
 {
 	if [ "$#" -ne 0 ]; then
@@ -116,8 +108,8 @@ main()
 		'Change Brightness')
 			change_brightness
 			;;
-		'Quit a Program')
-			quit_a_program
+		'Kill a Process')
+			mykill
 			;;
 		*)
 			# Execute the item as a shell command. There are
@@ -134,6 +126,6 @@ xournalpp
 svkbd-en
 Change Brightness
 pavucontrol
-Quit a Program
+Kill a Process
 *Cancel*
 EOF
