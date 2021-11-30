@@ -21,8 +21,8 @@ linemax=70
 # The line number of "$procs" that is the start of the current page.
 menustart=1
 
-ps x --no-headers --sort -%mem o pid,stat,args |
-	awk -v linemax="$linemax" '$2 !~ /l/ || $2 ~ /sl/ || $2 ~ /l\+/ {
+ps x --no-headers --sort -%mem o pid,args |
+	awk -v linemax="$linemax" '{
 		print (length > linemax) ?  substr($0, 1, linemax - 1) "…" : $0
 	}' > "$procs"
 
