@@ -1,0 +1,61 @@
+#!/bin/sh
+# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
+# Licensed under the GPLv3. See GPLv3.txt for details.
+#
+# File:        mykill
+# Description: Provide a menu to select and kill a process.
+
+# File to hold a list of processes to be chosen from.
+procs="$(mktemp)"
+
+# File to hold the list of options presented to the user. Its contents
+# are updated each time the user selects a page.
+menu="$(mktemp)"
+
+# The maximum amount of processes to show on each page of the menu.
+pagemax=15
+
+# The maximum length of each line. Longer lines will be truncated.
+linemax=70
+
+# The line number of "$procs" that is the start of the current page.
+menustart=1
+
+ps x --no-headers --sort -%mem o pid,stat,args |
+	awk -v linemax="$linemax" '$2 !~ /l/ || $2 ~ /sl/ || $2 ~ /l\+/ {
+		print (length > linemax) ?  substr($0, 1, linemax - 1) "…" : $0
+	}' > "$procs"
+
+while true; do
+	sed -n "$menustart,$((menustart + pagemax - 1))p" "$procs" > "$menu"
+	printf '*Next*\n*Previous*\n*Cancel*\n' >> "$menu"
+
+	pid="$(dmenu -i -c -l 30 -fn 'monospace:size=20' \
+		-sb 'dark blue' -p 'Which one?' < "$menu" |
+		awk '{ print $1 }')"
+
+	case "$pid" in
+		'*Next*') menustart=$((menustart + pagemax)) ;;
+		'*Previous*')
+			menustart=$((menustart - pagemax))
+			test "$menustart" -lt 1 && menustart=1
+			;;
+		'*Cancel*' | '') break ;;
+		*)  # A process was selected.
+			name="$(ps x o pid,comm | awk -v pid="$pid" \
+				'$1 == pid { print $2 }')"
+			choice="$(printf 'Yes.\nNo.\n' | dmenu -i -c -l 2 \
+				-fn 'monospace:size=40' -sb 'dark blue' \
+				-p "Kill $name?")"
+
+			if [ "$choice" = 'Yes.' ]; then
+				kill "$pid"
+				break
+			else
+				continue
+			fi
+			;;
+	esac
+done
+
+rm "$procs" "$menu"  # Cleanup temporary files
