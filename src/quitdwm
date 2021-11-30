@@ -10,7 +10,7 @@ if [ "$(printf "Y\nN" | dmenu -i -sb 'dark red' -p "Are you sure?")" = "Y" ]
 then
 
 	#shellcheck disable=SC2009
-	ps --sort -etime a o pid,etime,tty,comm |
+	ps --sort -etime x o pid,etime,tty,comm |
 		grep ' dwm$' |
 		dmenu -n -l 6 -sb 'dark green' -p "Which one?" |
 		awk '{ print $1 }' |
