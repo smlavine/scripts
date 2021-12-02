@@ -3,15 +3,44 @@
 # Licensed under the MIT license. See MIT.txt for details.
 #
 # File:        rs
-# Description: Turns on (or off) the blue light filter.
-# Options:     -o        Turn off the blue light filter.
+# Description: Controls the blue light filter.
+# Options:     -f        Turn off the blue light filter.
+# Options:     -n        Turn on the blue light filter.
+# Options:     -t        Toggle the blue light filter. (Assumed)
 
-options="o"
+rs_on="$XDG_DATA_HOME/smlss/rs_on"
+[ ! -d "$(dirname "$rs_on")" ] && mkdir -p "$(dirname "$rs_on")"
+
+off()
+{
+	redshift -x
+	rm "$rs_on"
+}
+
+on()
+{
+	redshift -PO 3500
+	touch "$rs_on"
+}
+
+toggle()
+{
+	if [ -f "$rs_on" ]; then
+		off
+	else
+		on
+	fi
+}
+
+options="fnt"
 while getopts "$options" o; do
 	case "$o" in
-		o) redshift -x && exit ;;
-		*) echo "Usage: rs [-$options]" && exit ;;
+		f) off; exit ;;
+		n) on; exit ;;
+		t) toggle; exit ;;
+		*) echo "Usage: rs [-$options]"; exit ;;
 	esac
 done
 
-redshift -PO 3500k
+# With no options:
+toggle
