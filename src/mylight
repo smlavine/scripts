@@ -6,6 +6,6 @@
 # Description: Call `light` and notify of the new light level
 # Options:     See light(1).
 
-sudo light $@
+sudo light "$@"
 dunstctl close
 light | xargs -Ix dunstify -t 500 x
