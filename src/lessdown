@@ -6,27 +6,22 @@
 # Description: Format the given Markdown file(s) to view in less.
 # Arguments:   Markdown files to view
 
+awkfmt='
+/^```/ { codeblock = !codeblock }
+
+# Print non-top-level headings in blue, without indentation
+/^##/ { print "\033[;34m" $0 "\033[0m"; next }
+
+# Print top level headings in bold blue, without indentation
+/^#/ { print "\033[1;34m" $0 "\033[0m"; next }
+
+# Indent non-heading lines
+{ print "\t" $0 }
+'
+
 cols="$(tput cols)"
 tabwidth="$(infocmp "$TERM" | grep -o 'it#[0-9]*' | tr -dc '0-9')"
 
-fold -sw "$((cols - tabwidth - 2))" "$@" | awk -v 'codeblock=0' \
-	'{
-		if (substr($0,1,3) == "```") {
-			codeblock = !codeblock
-		}
-
-		if (!codeblock) {
-			if (substr($0,1,2) == "##") {
-				# Print non-top-level headings in blue
-				print "\033[;34m" $0 "\033[0m"
-				next
-			} else if (substr($0,1,1) == "#") {
-				# Print top-level headings in bold blue
-				print "\033[1;34m" $0 "\033[0m"
-				next
-			}
-		}
-
-		# Indent regular lines, as man pages are shown
-		print "\t" $0
-	}' | less -R
+fold -sw "$((cols - tabwidth - 2))" "$@" |
+	awk -v 'codeblock=0' "$awkfmt" |
+	less -R
