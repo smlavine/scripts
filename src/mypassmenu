@@ -45,6 +45,9 @@ cut -f1 "$weights" "$entries" | sort | uniq -u | while read -r entry; do
 	fi
 done
 
+# Remove temp file.
+rm "$entries"
+
 pw="$(sort -rnk 2 "$weights" | cut -f1 | dmenu -i -c -fn 20 -sb '#b00' -l 30)"
 
 pass show -c "$pw"
