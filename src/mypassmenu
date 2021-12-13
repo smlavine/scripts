@@ -29,8 +29,7 @@ find "$passdir" -name '*.gpg' | sed -e "s:^$passdir/::" -e 's/\.gpg$//' \
 # If an entry is in "$entries" xor "$weights", then it has either been
 # added to or removed from the password store since the last invocation.
 
-cut -f1 "$weights" "$entries" | sort | uniq -u | while read -r entry;
-do
+cut -f1 "$weights" "$entries" | sort | uniq -u | while read -r entry; do
 	if grep -q "^$entry$" "$entries"; then
 		# If $entry is in the password list, then it is
 		# a new password that has not yet been added to
