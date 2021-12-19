@@ -1,6 +1,6 @@
 #!/bin/sh
 # Copyright (c) 2019-2021 Sebastian LaVine <mail@smlavine.com>
-# Licensed under the MIT license. See MIT.txt for details.
+# SPDX-License-Identifier: MIT
 #
 # File:        mycmus
 # Description: Transmits info of current song playing in cmus using dmenu.

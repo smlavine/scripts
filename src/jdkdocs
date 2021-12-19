@@ -1,6 +1,6 @@
 #!/bin/sh
 # Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
-# Licensed under the MIT license. See MIT.txt for details.
+# SPDX-License-Identifier: MIT
 #
 # File:        jdkdocs
 # Description: Prompts the user with dmenu for a file to view from
