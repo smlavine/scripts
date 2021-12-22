@@ -4,6 +4,7 @@
 #
 # File:        xp
 # Description: Write stdin to a file, then pass the file to a given command
+# Example:     pandoc README.md | xp firefox
 # Arguments:   Command to run
 
 if [ "$#" -eq 0 ]; then
