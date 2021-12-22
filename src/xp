@@ -21,7 +21,7 @@ cat > "$file"  # Read file from stdin
 # If a firefox window is already open, then it will open the file as a
 # tab in that window, returning to this script before it has actually
 # read the file. Then it is removed before it is read. For this reason,
-# let's wait a few seconds to give it a change to catch up.
-sleep 2
+# let's wait a second to give it a change to catch up.
+sleep 1
 
 rm "$file"
