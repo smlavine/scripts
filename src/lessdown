@@ -6,7 +6,7 @@
 # Description: Format the given Markdown file(s) to view in less.
 # Arguments:   Markdown files to view
 
-# $ expressions are deliberately unexpanded for ues in awk.
+# $ expressions are deliberately unexpanded for use in awk.
 # shellcheck disable=SC2016
 awkfmt='
 /^```/ { codeblock = !codeblock }
