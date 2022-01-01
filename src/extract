@@ -1,0 +1,50 @@
+#!/bin/sh
+# Copyright (c) 2019 Luke Smith <github.com/lukesmithxyz>
+# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
+# Originally written by Luke Smith for his dotfiles and improved by Sebastian
+# LaVine.
+# Licensed under the GNU GPLv3. See GPLv3.txt for details.
+#
+# File: extract
+# Description: A general, all-purpose extraction script. By default, the
+#              archive is extracted into a new directory.
+# Options:     -c        Extract contents into current directory.
+# Arguments:   path to archive
+
+
+while getopts "hc" o; do case "${o}" in
+        c) extracthere="True" ;;
+        *) printf "Options:\\n   -c: Extract archive into current directory rather than a new one.\\n" && exit ;;
+esac done
+
+if [ -z "$extracthere" ]; then
+        archive="$(readlink -f "$*")" &&
+        directory="$(echo "$archive" | sed 's/\.[^\/.]*$//')" &&
+        mkdir -p "$directory" &&
+        cd "$directory" || exit
+else
+        archive="$(readlink -f "$(echo "$*" | cut -d' ' -f2)")"
+fi
+
+[ "$archive" = "" ] && printf "Give archive to extract as argument.\\n" && exit
+
+if [ -f "$archive" ] ; then
+        case "$archive" in
+                *.tar.bz2|*.tbz2) tar xvjf "$archive" ;;
+                *.tar.gz|*.tgz) tar xvzf "$archive" ;;
+                *.tar.xz|*.txz) tar xvJf "$archive" ;;
+                *.lzma) unlzma "$archive" ;;
+                *.bz2) bunzip2 "$archive" ;;
+                *.rar) unrar x -ad "$archive" ;;
+                *.gz) gunzip "$archive" ;;
+                *.tar) tar xvf "$archive" ;;
+                *.zip) unzip "$archive" ;;
+                *.Z) uncompress "$archive" ;;
+                *.7z) 7z x "$archive" ;;
+                *.xz) unxz "$archive" ;;
+                *.exe) cabextract "$archive" ;;
+                *) printf "extract: '%s' - unknown archive method\\n" "$archive" ;;
+        esac
+else
+        printf "File \"%s\" not found.\\n" "$archive"
+fi

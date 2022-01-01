@@ -16,5 +16,11 @@ and
 [GPLv3.txt](https://git.sr.ht/~smlavine/scripts/tree/master/item/GPLv3.txt)
 for specifics.
 
+# Contrib
+The file
+[extract](https://git.sr.ht/~smlavine/scripts/tree/master/item/src/extract)
+was originally written by [Luke Smith](https://github.com/lukesmithxyz), and is
+licensed under the GPLv3.
+
 # Contact
 To contact me, Sebastian LaVine, send an email to <mail@smlavine.com>.
