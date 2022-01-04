@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
+# Copyright (c) 2021-2022 Sebastian LaVine <mail@smlavine.com>
 # SPDX-License-Identifier: MPL-2.0
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -8,8 +8,8 @@
 # File:        rs
 # Description: Controls the blue light filter.
 # Options:     -f        Turn off the blue light filter.
-# Options:     -n        Turn on the blue light filter.
-# Options:     -t        Toggle the blue light filter. (Assumed)
+#              -n        Turn on the blue light filter.
+#              -t        Toggle the blue light filter. (Assumed)
 
 rs_on="$XDG_DATA_HOME/smlss/rs_on"
 [ ! -d "$(dirname "$rs_on")" ] && mkdir -p "$(dirname "$rs_on")"
