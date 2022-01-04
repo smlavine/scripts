@@ -11,16 +11,8 @@ To uninstall the scripts, run ```make uninstall```.
 
 # Copyright
 
-Unless otherwise specified, all scripts in this repository are licensed
-under the terms of the Mozilla Public License, v. 2.0. See [LICENSE][0]
-for more details.
-
-# Contrib
-
-The file
-[extract](https://git.sr.ht/~smlavine/scripts/tree/master/item/src/extract)
-was originally written by [Luke Smith](https://github.com/lukesmithxyz), and is
-licensed under the GPLv3.
+All scripts in this repository are licensed under the terms of the
+Mozilla Public License, v. 2.0. See [LICENSE][0] for more details.
 
 # Contact
 
