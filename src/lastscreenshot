@@ -6,14 +6,53 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # File:        lastscreenshot
-# Description: Opens the last screenshot taken in sxiv, and queues all previous
-#              screenshots to be viewed.
+# Description: Does one or more things with the last screenshot taken.
+#              previous screenshots to be viewed.
+# Options:     -c        cat the last screenshot to stdout.
+#              -g        Open the last screenshot in gthumb.
+#              -p        Print the path of the last screenshot. (Assumed)
+#              -s        View all screenshots in sxiv, starting with the newest
+#                        one.
 
-# Directory containing the screenshots.
 screenshot_path="${SCREENSHOT_DIR:-"$HOME/Documents/pictures/screenshots/"}"
+if [ ! -d "$screenshot_path" ]; then
+	printf 'lastscreenshot: %s: no such directory\n' "$screenshot_path" >&2
+	exit 1
+fi
 
-cd "$screenshot_path" || exit
+screenshots_sorted_by_time_modified()
+{
+	# sed removes a double '//', for if "$screenshot_path" ends with a '/'.
 
-# This is intentional word splitting.
-# shellcheck disable=SC2046
-sxiv $(ls -A1t)
+	# It is said not to parse ls in scripts, because of the way it can
+	# mangle filenames with weird characters like newlines. I do so here,
+	# because I think the risk of running into such characters in this
+	# context is small, and because POSIX provides a standard way to sort
+	# by time with ls. The best I can do with find is
+	#
+	#	find . -type f -printf '%T@\t%p\n' | sort -nk1 | cut -f2-
+	#
+	# and even that depends on the -printf GNUism.
+	# shellcheck disable=SC2012
+	ls -1At "$screenshot_path"/* | sed 's://:/:g'
+}
+
+print_path=1
+
+options='cgps'
+while getopts "$options" o; do
+	case "$o" in
+		c) unset print_path; cat=1 ;;
+		g) unset print_path; gthumb=1 ;;
+		p) print_path=1 ;;
+		s) unset print_path; sxiv=1 ;;
+		*) echo "Usage: lastscreenshot [-$options]" >&2; exit 1 ;;
+	esac
+done
+
+[ "$print_path" ] && screenshots_sorted_by_time_modified | sed 1q &
+[ "$cat" ] && screenshots_sorted_by_time_modified | sed 1q | xargs cat &
+[ "$gthumb" ] && screenshots_sorted_by_time_modified | sed 1q | xargs gthumb &
+[ "$sxiv" ] && screenshots_sorted_by_time_modified | sxiv - &
+
+wait
