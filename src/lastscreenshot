@@ -13,6 +13,7 @@
 #              -p        Print the path of the last screenshot. (Assumed)
 #              -s        View all screenshots in sxiv, starting with the newest
 #                        one.
+# Arguments:   The amount of files to use. (By default 1)
 
 screenshot_path="${SCREENSHOT_DIR:-"$HOME/Documents/pictures/screenshots/"}"
 if [ ! -d "$screenshot_path" ]; then
@@ -38,6 +39,7 @@ screenshots_time_sorted()
 }
 
 print_path=1
+amount=1
 
 options='cgps'
 while getopts "$options" o; do
@@ -50,9 +52,20 @@ while getopts "$options" o; do
 	esac
 done
 
-[ "$print_path" ] && screenshots_time_sorted | sed 1q &
-[ "$cat" ] && screenshots_time_sorted | sed 1q | xargs cat &
-[ "$gthumb" ] && screenshots_time_sorted | sed 1q | xargs gthumb &
+shift $((OPTIND - 1))
+
+if [ "$1" ]; then
+	if [ "$1" -gt 0 ]; then
+		amount="$1"
+	else
+		echo 'Argument must be an integer greater than zero' >&2
+		exit 1
+	fi
+fi
+
+[ "$print_path" ] && screenshots_time_sorted | sed "$amount"q &
+[ "$cat" ] && screenshots_time_sorted | sed "$amount"q | xargs cat &
+[ "$gthumb" ] && screenshots_time_sorted | sed "$amount"q | xargs gthumb &
 [ "$sxiv" ] && screenshots_time_sorted | sxiv - &
 
 wait
