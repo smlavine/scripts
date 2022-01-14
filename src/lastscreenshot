@@ -20,7 +20,7 @@ if [ ! -d "$screenshot_path" ]; then
 	exit 1
 fi
 
-screenshots_sorted_by_time_modified()
+screenshots_time_sorted()
 {
 	# sed removes a double '//', for if "$screenshot_path" ends with a '/'.
 
@@ -50,9 +50,9 @@ while getopts "$options" o; do
 	esac
 done
 
-[ "$print_path" ] && screenshots_sorted_by_time_modified | sed 1q &
-[ "$cat" ] && screenshots_sorted_by_time_modified | sed 1q | xargs cat &
-[ "$gthumb" ] && screenshots_sorted_by_time_modified | sed 1q | xargs gthumb &
-[ "$sxiv" ] && screenshots_sorted_by_time_modified | sxiv - &
+[ "$print_path" ] && screenshots_time_sorted | sed 1q &
+[ "$cat" ] && screenshots_time_sorted | sed 1q | xargs cat &
+[ "$gthumb" ] && screenshots_time_sorted | sed 1q | xargs gthumb &
+[ "$sxiv" ] && screenshots_time_sorted | sxiv - &
 
 wait
