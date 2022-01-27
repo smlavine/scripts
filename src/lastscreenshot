@@ -40,7 +40,7 @@ screenshots_time_sorted()
 
 usage()
 {
-	echo 'usage: lastscreenshot [-cghps]' >&2
+	echo 'usage: lastscreenshot [-cghps] [amt]' >&2
 }
 
 print_path=1
