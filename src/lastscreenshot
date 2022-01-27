@@ -38,6 +38,11 @@ screenshots_time_sorted()
 	ls -1At "$screenshot_path"/* | sed 's://:/:g'
 }
 
+usage()
+{
+	echo 'usage: lastscreenshot [-cghps]' >&2
+}
+
 print_path=1
 amount=1
 
@@ -48,7 +53,7 @@ while getopts "$options" o; do
 		g) unset print_path; gthumb=1 ;;
 		p) print_path=1 ;;
 		s) unset print_path; sxiv=1 ;;
-		*) echo "Usage: lastscreenshot [-$options]" >&2; exit 1 ;;
+		*) usage; exit 1 ;;
 	esac
 done
 
