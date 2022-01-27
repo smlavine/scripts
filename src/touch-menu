@@ -34,13 +34,13 @@ change_brightness()
 
 rotate_screen()
 {
-	if [ "$#" -ne 0 ]; then
-		way="$1"
-		shift
-	else
+	if [ "$#" -eq 0 ]; then
 		way="$(dmenu -c -i -l 6 \
 			-fn 'monospace:size=50' -p 'Which way?' |
 			tr '[:upper:]' '[:lower:]')"
+	else
+		way="$1"
+		shift
 	fi
 
 	if [ "$way" = 'toggle' ]; then
@@ -88,12 +88,12 @@ rotate_screen()
 
 main()
 {
-	if [ "$#" -ne 0 ]; then
-		item="$1"
-		shift
-	else
+	if [ "$#" -eq 0 ]; then
 		item="$(dmenu -c -i -l 20 -fn 'monospace:size=50' \
 			-p 'What to do?')"
+	else
+		item="$1"
+		shift
 	fi
 
 	[ "$item" = "*Cancel*" ] && exit 0
