@@ -41,7 +41,7 @@ screenshots_time_sorted()
 print_path=1
 amount=1
 
-options='cgps'
+options='cghps'
 while getopts "$options" o; do
 	case "$o" in
 		c) unset print_path; cat=1 ;;
