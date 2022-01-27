@@ -1,0 +1,67 @@
+#!/bin/sh
+# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
+# SPDX-License-Identifier: MPL-2.0
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# File:        lichessgames
+# Description: Prints URLs of the last N games from some lichess player
+#              previous screenshots to be viewed.
+# Options:     -a amt    Amount of games to list (limited to amt on page)
+#                        (assumed: 1)
+# Arguments:   Username of user to look up.
+
+set -e
+
+usage()
+{
+	echo "Usage: lichessgames [-h] [-a amt] user" >&2
+}
+
+lichess='lichess.org'
+amt=1
+
+while getopts 'a:h' o; do
+	case "$o" in
+		a) amt="$OPTARG" ;;
+		*) usage; exit 1 ;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+if [ "$#" -ne 1 ]; then
+	usage
+	exit 1
+fi
+
+user="$1"
+
+# Quietly make sure "$amt" is an integer (https://stackoverflow.com/a/27903078)
+if ! [ "$amt" -eq "$amt" ] 2>/dev/null; then
+	echo 'error: amt must be an integer.' >&2
+	exit 1
+fi
+
+if [ "$amt" -le 0 ]; then
+	echo 'error: amt must be greater than zero.' >&2
+	exit 1
+fi
+
+# We only bother to write to a file to count lines for the warning.
+gamesfile="$(mktemp)"
+
+curl -Ss "https://$lichess/@/$user/all" |
+	pup .game-row__overlay 'attr{href}' |
+	xargs -L1 printf 'https://%s%s\n' "$lichess" |
+	sponge |  # prevents "xargs: printf: terminated by signal 13"
+	sed "$amt"q |
+	tee "$gamesfile"
+
+lines="$(wc -l < "$gamesfile")"
+if [ "$lines" -lt "$amt" ]; then
+	echo 'warning: fewer lines received than requested' >&2
+fi
+
+rm "$gamesfile"
