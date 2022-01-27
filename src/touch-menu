@@ -97,6 +97,7 @@ main()
 	fi
 
 	[ "$item" = "*Cancel*" ] && exit 0
+
 	case "$item" in
 		'Rotate Screen')
 			rotate_screen "$@" <<- EOF
