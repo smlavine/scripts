@@ -26,7 +26,7 @@ menustart=1
 
 ps x --no-headers --sort -%mem o pid,args |
 	awk -v linemax="$linemax" '{
-		print (length > linemax) ?  substr($0, 1, linemax - 1) "…" : $0
+		print (length > linemax) ? substr($0, 1, linemax - 1) "…" : $0
 	}' > "$procs"
 
 while true; do
