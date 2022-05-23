@@ -14,7 +14,7 @@ location_file="$XDG_DATA_HOME/weather.tsv"
 
 # Given a ZIP code, prints the URL parameters that can be used to more
 # efficiently request information about a particular location.
-function locofzip()
+locofzip()
 {
 	curl -ILSs -w '%{url_effective}' -o /dev/null \
 		"$NWS/zipcity.php?inputstring=$1" | sed -e 's/^.*?//'
