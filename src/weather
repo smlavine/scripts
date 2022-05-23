@@ -1,0 +1,48 @@
+#!/bin/sh
+# Copyright (c) 2022 Sebastian LaVine <mail@smlavine.com>
+# SPDX-License-Identifier: MPL-2.0
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# File:        weather
+# Description: Scrapes and displays weather info from the NWS website.
+
+NWS='https://forecast.weather.gov'
+
+location_file="$XDG_DATA_HOME/weather.tsv"
+
+# Given a ZIP code, prints the URL parameters that can be used to more
+# efficiently request information about a particular location.
+function locofzip()
+{
+	curl -ILSs -w '%{url_effective}' -o /dev/null \
+		"$NWS/zipcity.php?inputstring=$1" | sed -e 's/^.*?//'
+}
+
+# So that we don't have to prompt the user for their zip code/location on every
+# invocation, we store their location in a file, and associate it with their
+# wifi SSID. This is a decent enough way to "detect" when they are in a
+# different place.
+touch "$location_file"
+
+wifi="$(nmcli connection show --active | sed 1d | cut -d' ' -f1)"
+
+location="$(awk -v wifi="$wifi" '$1 == wifi { print $2 }' < "$location_file")"
+
+if [ -z "$location" ]; then
+	zipcode="$(dmenu -bw 40 -fn 'monospace:size=20' \
+		-p 'What is your ZIP code?' <&-)"
+	if [ -z "$zipcode" ]; then
+		exit 1
+	fi
+	location="$(locofzip "$zipcode")"
+	printf '%s\t%s' "$wifi" "$location" >> "$location_file"
+fi
+
+# Scrapes the page for graphical weather information for the URL of the chart
+# image, downloads it, then pipes it to sxiv to view.
+curl "$NWS/$(curl "$NWS/MapClick.php?FcstType=graphical&$location" |
+	grep meteograms |
+	sed -e 's/^.*meteograms/meteograms/' -e 's/".*$//')" | xp sxiv -z 120
+
