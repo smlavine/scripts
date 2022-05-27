@@ -40,9 +40,15 @@ if [ -z "$location" ]; then
 	printf '%s\t%s\n' "$wifi" "$location" >> "$location_file"
 fi
 
+img="/tmp/weather-$location"
+
 # Scrapes the page for graphical weather information for the URL of the chart
 # image, downloads it, then pipes it to sxiv to view.
 curl "$NWS/$(curl "$NWS/MapClick.php?FcstType=graphical&$location" |
 	grep meteograms |
-	sed -e 's/^.*meteograms/meteograms/' -e 's/".*$//')" | xp sxiv -z 120
+	sed -e 's/^.*meteograms/meteograms/' -e 's/".*$//')" > "$img"
+
+sxiv "$img"
+
+rm "$img"
 
