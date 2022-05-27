@@ -37,7 +37,7 @@ if [ -z "$location" ]; then
 		exit 1
 	fi
 	location="$(locofzip "$zipcode")"
-	printf '%s\t%s' "$wifi" "$location" >> "$location_file"
+	printf '%s\t%s\n' "$wifi" "$location" >> "$location_file"
 fi
 
 # Scrapes the page for graphical weather information for the URL of the chart
