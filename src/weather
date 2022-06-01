@@ -26,7 +26,10 @@ locofzip()
 # different place.
 touch "$location_file"
 
-wifi="$(nmcli connection show --active | sed 1d | cut -d' ' -f1)"
+wifi="$(nmcli connection show --active |
+	sed 1d |  # Delete table header
+	awk '$3 == "wifi"' |  # Only list wifi connection; e.g. ignore VPN
+	cut -d' ' -f1)"
 
 location="$(awk -v wifi="$wifi" '$1 == wifi { print $2 }' < "$location_file")"
 
