@@ -75,8 +75,8 @@ rotate_screen()
 	pen='Wacom ISDv4 E6 Pen Pen (0)'
 	eraser='Wacom ISDv4 E6 Pen Eraser (0)'
 	for device in "$pen" "$eraser"; do
-		# Without this command, the touch screen inputs do not
-		# match up with the new orientation of the screen.
+		# The xinput command aligns touch screen inputs with the
+		# new orientation of the screen.
 		#
 		# The $matrix string must be split on spaces.
 		# shellcheck disable=SC2086
