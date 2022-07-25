@@ -66,23 +66,27 @@ rotate_screen()
 		*)        exit 1 ;;
 	esac
 
-	xrandr -o "$way" || exit $?
-
-	# TODO: fix issue where the transformation matrix is not changed if
-	# the pen or eraser have not yet had contact with the screen during
-	# this session.
+	# Before rotating the screen, realign touch screen inputs with the
+	# new orientation of the screen. If the pen or eraser is not found,
+	# then the user (probably just) hasn't touched it to the screen yet in
+	# this X session. This check addresses the annoying situation where I
+	# flip the screen, then for the first time in the session use the touch
+	# pen, which is misaligned, making me waste time rotating the screen
+	# over again.
 
 	pen='Wacom ISDv4 E6 Pen Pen (0)'
 	eraser='Wacom ISDv4 E6 Pen Eraser (0)'
 	for device in "$pen" "$eraser"; do
-		# The xinput command aligns touch screen inputs with the
-		# new orientation of the screen.
-		#
 		# The $matrix string must be split on spaces.
 		# shellcheck disable=SC2086
-		xinput --set-prop "$device" \
-			'Coordinate Transformation Matrix' $matrix
+		if ! xinput --set-prop "$device" 'Coordinate Transformation Matrix' $matrix; then
+			dunstify -t 5000 -u 2 "Input device $device not found."
+			exit 1
+		fi
 	done
+
+	xrandr -o "$way" || exit $?
+
 }
 
 main()
