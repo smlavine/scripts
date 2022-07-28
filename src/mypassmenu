@@ -25,31 +25,30 @@ passdir="${PASSWORD_STORE_DIR-~/.password-store}"
 weights="${MYPASSMENU_WEIGHTS-$XDG_DATA_HOME/mypassmenu.tsv}"
 
 # File listing all passwords in the password store.
-entries="$(mktemp)"
+temp_pwlist="$(mktemp)"
 find "$passdir" -name '*.gpg' | sed -e "s:^$passdir/::" -e 's/\.gpg$//' \
-	> "$entries"
+	> "$temp_pwlist"
 
-# If an entry is in "$entries" xor "$weights", then it has either been
+# If an entry is in "$temp_pwlist" xor "$weights", then it has either been
 # added to or removed from the password store since the last invocation.
 
-cut -f1 "$weights" "$entries" | sort | uniq -u | while read -r entry; do
-	if grep -q "^$entry$" "$entries"; then
-		# If $entry is in the password list, then it is
+cut -f1 "$weights" "$temp_pwlist" | sort | uniq -u | while read -r pw; do
+	if grep -q "^$pw$" "$temp_pwlist"; then
+		# If $pw is in the password list, then it is
 		# a new password that has not yet been added to
 		# the weight file.
 		# Add it.
-		printf '%s\t0\n' "$entry" >> "$weights"
+		printf '%s\t0\n' "$pw" >> "$weights"
 	else
-		# If $entry is not in the password list, then it
+		# If $pw is not in the password list, then it
 		# is a password that has been removed from pass
 		# and not yet removed from the weight file.
 		# Remove it.
-		grep -v "^$entry	" "$weights" | sponge "$weights"
+		grep -v "^$pw	" "$weights" | sponge "$weights"
 	fi
 done
 
-# Remove temp file.
-rm "$entries"
+rm "$temp_pwlist"
 
 pw="$(sort -rnk 2 "$weights" | cut -f1 | dmenu -i -c -fn 20 -sb '#b00' -l 30)"
 
