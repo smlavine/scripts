@@ -24,14 +24,13 @@ passdir="${PASSWORD_STORE_DIR-~/.password-store}"
 # logins/github.com/smlavine	0
 weights="${MYPASSMENU_WEIGHTS-$XDG_DATA_HOME/mypassmenu.tsv}"
 
-# File listing all passwords in the password store.
+# If a password is listed in the password store XOR the weight file,
+# then it has either been added to or removed from the password store
+# since the last invocation of mypassmenu. So before choosing a password
+# we must fix any discrepencies by updating the weight file.
 temp_pwlist="$(mktemp)"
 find "$passdir" -name '*.gpg' | sed -e "s:^$passdir/::" -e 's/\.gpg$//' \
 	> "$temp_pwlist"
-
-# If an entry is in "$temp_pwlist" xor "$weights", then it has either been
-# added to or removed from the password store since the last invocation.
-
 cut -f1 "$weights" "$temp_pwlist" | sort | uniq -u | while read -r pw; do
 	if grep -q "^$pw$" "$temp_pwlist"; then
 		# If $pw is in the password list, then it is
@@ -47,7 +46,6 @@ cut -f1 "$weights" "$temp_pwlist" | sort | uniq -u | while read -r pw; do
 		grep -v "^$pw	" "$weights" | sponge "$weights"
 	fi
 done
-
 rm "$temp_pwlist"
 
 pw="$(sort -rnk 2 "$weights" | cut -f1 | dmenu -i -c -fn 20 -sb '#b00' -l 30)"
