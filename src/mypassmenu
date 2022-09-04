@@ -6,6 +6,11 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # File:        mypassmenu
+# Options:     -1        Instead of prompting the user with dmenu, selects the
+#                        top choice automatically.
+#              -m        Only show passwords that match the provided regex.
+#              -o        Instead of copying the selected password to the
+#                        clipboard, prints to stdout with a newline.
 # Description: Opens a stylized dmenu prompt with passwords to select
 #              from. Passwords are sorted according to the weight
 #              value attached to them in $weights. Each time a
@@ -13,6 +18,19 @@
 #              over time the most used passwords take the least amount
 #              of time to choose from the dmenu prompt.
 
+usage()
+{
+	echo "Usage: mypassmenu [-1o] [-m regex]"
+}
+
+while getopts "1m:o" opt; do
+	case "$opt" in
+		1) one=1           ;;
+		m) match="$OPTARG" ;;
+		o) stdout=1        ;;
+		*) usage; exit 1   ;;
+	esac
+done
 
 # The directory containing the passwords.
 passdir="${PASSWORD_STORE_DIR-~/.password-store}"
@@ -48,9 +66,26 @@ cut -f1 "$weights" "$temp_pwlist" | sort | uniq -u | while read -r pw; do
 done
 rm "$temp_pwlist"
 
-pw="$(sort -rnk 2 "$weights" | cut -f1 | dmenu -i -c -fn 20 -sb '#b00' -l 30)"
+pws="$(sort -rnk 2 "$weights" | cut -f1)"
+if [ "$match" ]; then
+	pws="$(echo "$pws" | grep "$match")"
+fi
+if [ "$one" ]; then
+	pw="$(echo "$pws" | head -n 1)"
+else
+	pw="$(echo "$pws" | dmenu -i -c -fn 20 -sb '#b00' -l 30)"
+fi
 
-pass show -c "$pw"
+if [ ! "$pw" ]; then
+	echo 'No password selected.'
+	exit 0
+fi
+
+if [ "$stdout" ]; then
+	pass show "$pw"
+else
+	pass show -c "$pw"
+fi
 
 # Increment the weight of the password chosen.
 awk '$1 == "'"$pw"'" { print $1 "\t" $2+1; next } { print $0 }' "$weights" |
