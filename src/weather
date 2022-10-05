@@ -13,7 +13,9 @@ NWS='https://forecast.weather.gov'
 location_file="$XDG_DATA_HOME/weather.tsv"
 
 # Given a ZIP code, prints the URL parameters that can be used to more
-# efficiently request information about a particular location.
+# efficiently request information about a particular location. Will be
+# formatted like so: locofzip 20500 =>
+# 'CityName=Washington&state=DC&site=LWX&lat=38.895&lon=-77.0373'
 locofzip()
 {
 	curl -ILSs -w '%{url_effective}' -o /dev/null \
