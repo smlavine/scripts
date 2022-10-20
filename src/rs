@@ -10,6 +10,7 @@
 # Options:     -f        Turn off the blue light filter.
 #              -n        Turn on the blue light filter.
 #              -t        Toggle the blue light filter. (Assumed)
+# Arguments:   If any, display whether or not the filter is active
 
 rs_on="$XDG_DATA_HOME/smlss/rs_on"
 [ ! -d "$(dirname "$rs_on")" ] && mkdir -p "$(dirname "$rs_on")"
@@ -45,5 +46,14 @@ while getopts "$options" o; do
 	esac
 done
 
-# With no options:
-toggle
+shift $((OPTIND - 1))
+
+if [ $# -eq 0 ]; then
+	toggle
+else
+	if [ -f "$rs_on" ]; then
+		notify-send -t 3000 "The blue light filter is ON."
+	else
+		notify-send -t 3000 "The blue light filter is OFF."
+	fi
+fi
