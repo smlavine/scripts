@@ -1,4 +1,4 @@
-# scripts
+# [scripts](https://git.sr.ht/~smlavine/scripts)
 
 These are various scripts that I use on my system. They are deployed by
 [smlss](https://sr.ht/~smlavine/smlss).
