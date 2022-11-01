@@ -3,11 +3,11 @@
 These are various scripts that I use on my system. They are deployed by
 [smlss](https://sr.ht/~smlavine/smlss).
 
-All scripts are located in the ```src/``` directory.
+All scripts are located in the `src/` directory.
 
-To install the scripts, simply run ```make``` or ```make install```.
+To install the scripts, simply run `make` or `make install`.
 
-To uninstall the scripts, run ```make uninstall```.
+To uninstall the scripts, run `make uninstall`.
 
 # Copyright
 
