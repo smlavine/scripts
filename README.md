@@ -14,9 +14,4 @@ To uninstall the scripts, run `make uninstall`.
 All scripts in this repository are licensed under the terms of the
 Mozilla Public License, v. 2.0. See [LICENSE][0] for more details.
 
-# Contact
-
-To contact me, Sebastian LaVine, send an email to <mail@smlavine.com>.
-
-
 [0]: https://git.sr.ht/~smlavine/scripts/tree/master/item/LICENSE
