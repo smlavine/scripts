@@ -20,8 +20,8 @@ location_file="$XDG_DATA_HOME/weather.tsv"
 # particular location, the URL of which we yoink.
 locofzip()
 {
-	curl -ILSs -w '%{url_effective}' -o /dev/null \
-		"$NWS/zipcity.php?inputstring=$1" | sed -e 's/^.*?//'
+	curl -GILSs -d inputstring="$1" -w '%{url_effective}' -o /dev/null \
+		"$NWS/zipcity.php" | sed -e 's/^.*?//'
 }
 
 # So that we don't have to prompt the user for their zip code/location on every
