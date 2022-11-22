@@ -7,7 +7,7 @@
 #
 # File:        pausemusic
 # Description: Toggles music playback, if music is playing in either pianobar
-#              or cmus.
+#              or mpd.
 
-pidof cmus && cmus-remote -u
 pidof pianobar && printf ' ' > ~/.config/pianobar/ctl
+mpc toggle
