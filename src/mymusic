@@ -8,7 +8,7 @@
 # File:        mymusic
 # Description: Transmits info of current song playing in mpd using dmenu.
 
-mpc -f '%artist% - %title% (%album%)' current
+info="$(mpc -f '%artist% "%album%" (%date%) - %title%' current)"
 
 # Yank: Pastes song info into system clipboard
 # Duck: Opens web browser and searches song info on DuckDuckGo
