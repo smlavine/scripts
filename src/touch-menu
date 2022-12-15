@@ -129,10 +129,10 @@ main()
 
 main "$@" << EOF
 Rotate Screen
+Change Brightness
+Kill a Process
 xournalpp
 svkbd-en
-Change Brightness
 pavucontrol
-Kill a Process
 *Cancel*
 EOF
