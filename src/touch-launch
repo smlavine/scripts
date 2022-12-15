@@ -1,0 +1,22 @@
+#!/bin/sh
+# Copyright (c) 2022 Sebastian LaVine <mail@smlavine.com>
+# SPDX-License-Identifier: MPL-2.0
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# File:        touch-launch
+# Description: Provide a menu to launch a program. Opens a keyboard to type
+#              letters to narrow down search. Works best if dmenu_run is
+#              replaced with dmenu_run_history.
+
+if ! pgrep svkbd-en >/dev/null; then
+	svkbd-en &
+	pid="$!"
+fi
+
+dmenu_run -i -c -y -100 -fn 'monospace:size=25' -sb '#b00' -l 8
+
+if [ "$pid" ]; then
+	kill -9 "$pid"
+fi
