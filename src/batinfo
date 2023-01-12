@@ -1,0 +1,44 @@
+#!/usr/bin/awk -f
+# Copyright (c) 2023 Sebastian LaVine <mail@smlavine.com>
+# SPDX-License-Identifier: MPL-2.0
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# File:        batinfo
+# Description: Reformats the output of acpi to be more concise. See
+#              <https://git.sr.ht/~smlavine/dwmblocks>.
+
+# The input is expected to look something like this:
+# Battery 0: Discharging, 99%, 02:44:54 remaining
+
+BEGIN {
+        # Do not end print statements with a newline.
+        ORS = ""
+
+        "acpi" | getline
+        status = $3
+        percentage = $4
+        time = $5
+
+        sub(/,$/, "", percentage);
+
+        # Replace the first colon with an hour label.
+        sub(":", "h", time);
+        # Replace the second colon with a minute label,
+        # and also get rid of the seconds field.
+        sub(/:.*$/, "m", time);
+
+        print percentage " ";
+        if (length(time > 0))
+                print time " ";
+
+        if (status == "Charging,")
+                print "CHR";
+        else if (status == "Discharging,")
+                print "DRN";
+        else if (status == "Full,")
+                print "FULL";
+        else
+                print "?";
+}
