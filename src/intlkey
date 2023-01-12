@@ -7,9 +7,31 @@
 #
 # File:        intlkey
 # Description: Toggles between the US and US INTL keyboard layouts.
+# Options:     -i        Instead of toggling the keyboard layout, print what
+#                        the current layout is.
 
-if [ "$(setxkbmap -query | awk '/^variant:/ { print $2 }')" = "intl" ]; then
-	setxkbmap us
+usage()
+{
+	echo "usage: intlkey [-i]"
+}
+
+while getopts "i" o; do
+	case "$o" in
+		i) i=1 ;;
+		*) usage; exit ;;
+	esac
+done
+
+variant="$(setxkbmap -query | awk '/^variant:/ { print $2 }')"
+
+if [ "$i" ]; then
+	if [ "$variant" = "intl" ]; then
+		echo 'INTL'
+	else
+		echo 'US'
+	fi
+elif [ "$variant" = "intl" ]; then
+	setxkbmap us 
 else
 	setxkbmap us -variant intl
 fi
