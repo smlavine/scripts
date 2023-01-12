@@ -9,7 +9,7 @@
 # Description: Toggles between the US and US INTL keyboard layouts.
 
 if [ "$(setxkbmap -query | awk '/^variant:/ { print $2 }')" = "intl" ]; then
-    setxkbmap us
+	setxkbmap us
 else
-    setxkbmap us -variant intl
+	setxkbmap us -variant intl
 fi
