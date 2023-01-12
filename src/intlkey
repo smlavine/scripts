@@ -8,8 +8,7 @@
 # File:        intlkey
 # Description: Toggles between the US and US INTL keyboard layouts.
 
-if [ "$(setxkbmap -query | awk '/^variant:/ { print $2 }')" = "intl" ]
-then
+if [ "$(setxkbmap -query | awk '/^variant:/ { print $2 }')" = "intl" ]; then
     setxkbmap us
 else
     setxkbmap us -variant intl
