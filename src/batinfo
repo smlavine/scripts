@@ -42,4 +42,6 @@ BEGIN {
 		print "FULL";
 	else
 		print "?";
+
+	close("acpi")
 }
