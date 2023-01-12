@@ -13,16 +13,15 @@
 # Battery 0: Discharging, 99%, 02:44:54 remaining
 
 BEGIN {
-	# Do not end print statements with a newline.
-	ORS = ""
-
 	"acpi" | getline
 	status = $3
 	percentage = $4
 	time = $5
 
+	ORS = " "
+
 	sub(/,$/, "", percentage);
-	print percentage " ";
+	print percentage;
 
 	if (length(time > 0)) {
 	        # Replace the first colon with an hour label.
@@ -30,8 +29,10 @@ BEGIN {
 	        # Replace the second colon with a minute label,
 	        # and also get rid of the seconds field.
 	        sub(/:.*$/, "m", time);
-		print time " ";
+		print time;
 	}
+
+        ORS = "\n"
 
 	if (status == "Charging,")
 		print "CHR";
