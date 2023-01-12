@@ -22,14 +22,13 @@ BEGIN {
 	time = $5
 
 	sub(/,$/, "", percentage);
+	print percentage " ";
 
 	# Replace the first colon with an hour label.
 	sub(":", "h", time);
 	# Replace the second colon with a minute label,
 	# and also get rid of the seconds field.
 	sub(/:.*$/, "m", time);
-
-	print percentage " ";
 	if (length(time > 0))
 		print time " ";
 
