@@ -13,32 +13,32 @@
 # Battery 0: Discharging, 99%, 02:44:54 remaining
 
 BEGIN {
-        # Do not end print statements with a newline.
-        ORS = ""
+	# Do not end print statements with a newline.
+	ORS = ""
 
-        "acpi" | getline
-        status = $3
-        percentage = $4
-        time = $5
+	"acpi" | getline
+	status = $3
+	percentage = $4
+	time = $5
 
-        sub(/,$/, "", percentage);
+	sub(/,$/, "", percentage);
 
-        # Replace the first colon with an hour label.
-        sub(":", "h", time);
-        # Replace the second colon with a minute label,
-        # and also get rid of the seconds field.
-        sub(/:.*$/, "m", time);
+	# Replace the first colon with an hour label.
+	sub(":", "h", time);
+	# Replace the second colon with a minute label,
+	# and also get rid of the seconds field.
+	sub(/:.*$/, "m", time);
 
-        print percentage " ";
-        if (length(time > 0))
-                print time " ";
+	print percentage " ";
+	if (length(time > 0))
+		print time " ";
 
-        if (status == "Charging,")
-                print "CHR";
-        else if (status == "Discharging,")
-                print "DRN";
-        else if (status == "Full,")
-                print "FULL";
-        else
-                print "?";
+	if (status == "Charging,")
+		print "CHR";
+	else if (status == "Discharging,")
+		print "DRN";
+	else if (status == "Full,")
+		print "FULL";
+	else
+		print "?";
 }
