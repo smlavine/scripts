@@ -24,13 +24,14 @@ BEGIN {
 	sub(/,$/, "", percentage);
 	print percentage " ";
 
-	# Replace the first colon with an hour label.
-	sub(":", "h", time);
-	# Replace the second colon with a minute label,
-	# and also get rid of the seconds field.
-	sub(/:.*$/, "m", time);
-	if (length(time > 0))
+	if (length(time > 0)) {
+	        # Replace the first colon with an hour label.
+	        sub(":", "h", time);
+	        # Replace the second colon with a minute label,
+	        # and also get rid of the seconds field.
+	        sub(/:.*$/, "m", time);
 		print time " ";
+	}
 
 	if (status == "Charging,")
 		print "CHR";
