@@ -54,6 +54,10 @@ BEGIN {
 
 	if (length($5) == 0) {
 		time = "?"
+	} else if ($5 == "charging" || $5 == "discharging") {
+		# This occurs for a second or two each time the power cable is
+		# connected or disconnected.
+		time = "..."
 	} else {
 		time = $5
 		# Replace the first colon with an hour label.
