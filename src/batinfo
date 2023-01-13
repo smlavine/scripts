@@ -17,18 +17,18 @@ BEGIN {
 	close("acpi")
 
 	if ($3 == "Charging,") {
-		status = "CHR";
+		status = "CHR"
 	} else if ($3 == "Discharging,") {
-		status = "DRN";
+		status = "DRN"
 	} else if ($3 == "Full,") {
-		status = "FULL";
+		status = "FULL"
 	} else {
-		status = "?";
+		status = "?"
 	}
  
 	# +0 forces numeric conversion; therefore truncates the trailing "%,"
 	# from $4 also.
-	percentage = $4+0;
+	percentage = $4+0
 
 	if (status == "DRN") {
 		if (percentage <= 5) {
@@ -44,24 +44,24 @@ BEGIN {
 			# returns the seed on future calls. This is more
 			# portable than the GNU-specific systime() function, or
 			# getline-ing from the GNU-specific `date +%s` format.
-			srand();
-			color = (srand() % 2 == 0) ? "\3" : "\4";
+			srand()
+			color = (srand() % 2 == 0) ? "\3" : "\4"
 		} else if (percentage <= 15) {
 			# Set the output color to yellow in dwmblocks.
-			color = "\3";
+			color = "\3"
 		}
 	}
 
 	if (length($5) == 0) {
-		time = "?";
+		time = "?"
 	} else {
-		time = $5;
+		time = $5
 		# Replace the first colon with an hour label.
-		sub(":", "h", time);
+		sub(":", "h", time)
 		# Replace the second colon with a minute label,
 		# and also get rid of the seconds field.
-		sub(/:.*$/, "m", time);
+		sub(/:.*$/, "m", time)
 	}
 
-	print color percentage "% " time " " status;
+	print color percentage "% " time " " status
 }
