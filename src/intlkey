@@ -30,8 +30,12 @@ if [ "$i" ]; then
 	else
 		echo 'US'
 	fi
-elif [ "$variant" = "intl" ]; then
-	setxkbmap us 
 else
-	setxkbmap us -variant intl
+	if [ "$variant" = "intl" ]; then
+		setxkbmap us
+	else
+		setxkbmap us -variant intl
+	fi
+	# Automatically updated dwmblocks status bar. signal 17: 34+17=51
+	kill -51 $(pidof dwmblocks)
 fi

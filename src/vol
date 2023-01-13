@@ -15,4 +15,6 @@ if [ $# -eq 0 ]; then
 else
 	# set the audio according to the first argument
 	amixer -q set Master "$1"
+	# Automatically updated dwmblocks status bar. signal 18: 34+18=52
+	kill -52 $(pidof dwmblocks)
 fi
