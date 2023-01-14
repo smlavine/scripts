@@ -1,0 +1,24 @@
+#!/bin/sh
+# Copyright (c) 2023 Sebastian LaVine <mail@smlavine.com>
+# SPDX-License-Identifier: MPL-2.0
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# File:        current-twitch-chat
+# Description: Opens the twitch chat of the current stream being watched, if
+#              there is one.
+
+ps ax | awk '
+/\/usr\/bin\/streamlink.* twitch.tv\/.* / {
+	# The twitch.tv argument is usually after a lot of options when
+	# launched by streamlink-twitch-gui, so start looking from the end
+	# first.
+	for (i = NF; i > 0; i--) {
+		if (index($i, "twitch.tv/") == 1) {
+			sub(/twitch.tv\//, "", $i)
+			system("chatterino -c " $i)
+			exit
+		}
+	}
+}'
