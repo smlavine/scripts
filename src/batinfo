@@ -16,6 +16,10 @@ BEGIN {
 	"acpi" | getline
 	close("acpi")
 
+	if (length == 0) {
+		exit
+	}
+
 	if ($3 == "Charging,") {
 		status = "CHR"
 	} else if ($3 == "Discharging,") {
