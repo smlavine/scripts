@@ -1,0 +1,12 @@
+#!/bin/sh
+# Copyright (c) 2023 Sebastian LaVine <mail@smlavine.com>
+# SPDX-License-Identifier: MPL-2.0
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# File:        askpass
+# Description: A graphical program to request a user's password. Intended for
+#              integration with sudo(8).
+
+dmenu -P -p "$1"
