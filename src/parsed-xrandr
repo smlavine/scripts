@@ -1,0 +1,36 @@
+#!/bin/sh
+# Copyright (c) 2023 Sebastian LaVine <mail@smlavine.com>
+# SPDX-License-Identifier: MPL-2.0
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# File:        parsed-xrandr
+# Description: Parses xrandr, and for every input xrandr detects, prints the
+#              following (fields separated by tabs):
+#
+#              <input-name> <"connected" if connected|"disconnected" if disconnected but still detected> <resolution if active>
+
+xrandr | awk '
+	BEGIN {
+		OFS = "\t"
+		current_connected = ""
+	}
+
+	$2 == "disconnected" {
+		current_connected = ""
+		print $1, $2
+		next
+	}
+
+	$2 == "connected" {
+		current_connected = $1
+		next
+	}
+
+	current_connected && /\*/ {
+		print current_connected, "connected", $1
+		current_connected = ""
+		next
+	}
+'
