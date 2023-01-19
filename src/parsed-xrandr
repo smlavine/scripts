@@ -9,7 +9,7 @@
 # Description: Parses xrandr, and for every input xrandr detects, prints the
 #              following (fields separated by tabs):
 #
-#              <input-name> <"connected" if connected|"disconnected" if disconnected but still detected> <resolution if active>
+#              <input-name> <"connected" if connected|"active" if connected and active|"disconnected" if disconnected but still detected> <resolution if active>
 
 xrandr | awk '
 	BEGIN {
@@ -18,19 +18,34 @@ xrandr | awk '
 	}
 
 	$2 == "disconnected" {
+		if (current_connected) {
+			# A resolution was not found; the input is not active.
+			print current_connected, $1
+		}
 		current_connected = ""
 		print $1, $2
 		next
 	}
 
 	$2 == "connected" {
+		if (current_connected) {
+			# A resolution was not found; the input is not active.
+			print current_connected, $1
+		}
 		current_connected = $1
 		next
 	}
 
 	current_connected && /\*/ {
-		print current_connected, "connected", $1
+		print current_connected, "active", $1
 		current_connected = ""
 		next
+	}
+
+	END {
+		if (current_connected) {
+			# A resolution was not found; the input is not active.
+			print current_connected, "connected"
+		}
 	}
 '
