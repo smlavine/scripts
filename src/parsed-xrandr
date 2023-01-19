@@ -19,7 +19,7 @@ xrandr | awk '
 	$2 == "disconnected" {
 		if (current_connected) {
 			# A resolution was not found; the input is not active.
-			print current_connected, $1
+			print current_connected, "connected"
 		}
 		current_connected = ""
 		print $1, $2
@@ -29,7 +29,7 @@ xrandr | awk '
 	$2 == "connected" {
 		if (current_connected) {
 			# A resolution was not found; the input is not active.
-			print current_connected, $1
+			print current_connected, "connected"
 		}
 		current_connected = $1
 		next
