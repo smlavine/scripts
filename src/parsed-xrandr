@@ -13,7 +13,6 @@
 
 xrandr | awk '
 	BEGIN {
-		OFS = "\t"
 		current_connected = ""
 	}
 
