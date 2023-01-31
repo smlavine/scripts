@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
+# Copyright (c) 2021-2023 Sebastian LaVine <mail@smlavine.com>
 # SPDX-License-Identifier: MPL-2.0
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -9,8 +9,11 @@
 # Description: Sums the length of given audio files.
 # Arguments:   Audio files to sum the duration of
 
-mediainfo "$@" |
-	grep Duration | tr -s ' ' | cut -d' ' -f'3,5' |
+if [ "$#" -eq 0 ]; then
+	mediainfo ./*
+else
+	mediainfo "$@"
+fi | grep Duration | tr -s ' ' | cut -d' ' -f'3,5' |
 	awk 'NR % 2 != 1 { sum += $2; sum += $1*60 }
 	END { printf "%dh%dm%ds\n",
 		sum / (60*60), sum % (60*60) / 60, sum % 60 }'
