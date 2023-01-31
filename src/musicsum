@@ -9,11 +9,16 @@
 # Description: Sums the length of given audio files.
 # Arguments:   Audio files to sum the duration of
 
+# Recall that there are 3600 seconds in an hour and 60 seconds in a minute.
+
 if [ "$#" -eq 0 ]; then
-	mediainfo ./*
+	mediainfo --Output=JSON ./*
 else
-	mediainfo "$@"
-fi | grep Duration | tr -s ' ' | cut -d' ' -f'3,5' |
-	awk 'NR % 2 != 1 { sum += $2; sum += $1*60 }
-	END { printf "%dh%dm%ds\n",
-		sum / (60*60), sum % (60*60) / 60, sum % 60 }'
+	mediainfo --Output=JSON "$@"
+fi | jq -r '
+	map(.media.track | .[] | select(."@type" == "Audio") | .Duration | tonumber)
+		| add
+		| (. / 3600 | floor | tostring) + "h"
+			+ ((. % 3600) / 60 | floor | tostring) + "m"
+			+ (. % 60 | tostring) + "s"
+'
