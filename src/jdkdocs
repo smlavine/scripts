@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (c) 2021 Sebastian LaVine <mail@smlavine.com>
+# Copyright (c) 2021-2023 Sebastian LaVine <mail@smlavine.com>
 # SPDX-License-Identifier: MPL-2.0
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -9,8 +9,7 @@
 # Description: Prompts the user with dmenu for a file to view from
 #              offline JDK documentation.
 
-docs_location="$HOME/Documents/code/documents/"
-docs="jdk"
+docs_location="$HOME/Code/documents/jdk/"
 
 cd "$docs_location" || exit 1
 
@@ -24,7 +23,7 @@ cd "$docs_location" || exit 1
 # pressed and no file is chosen, then firefox won't open.
 # The -r option is not used because it is not portable.
 
-find "$docs" -name '*.html' |
+find . -name '*.html' |
 	awk '{ print length(), $0 }' |
 	sort -n |
 	cut -d' ' -f2- |
