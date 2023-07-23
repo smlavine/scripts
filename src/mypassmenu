@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (c) 2021-2022 Sebastian LaVine <mail@smlavine.com>
+# Copyright (c) 2021-2023 Sebastian LaVine <mail@smlavine.com>
 # SPDX-License-Identifier: MPL-2.0
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -8,9 +8,11 @@
 # File:        mypassmenu
 # Options:     -1        Instead of prompting the user with dmenu, selects the
 #                        top choice automatically.
+#              -d        Prints the location of the password store and exits.
 #              -m        Only show passwords that match the provided regex.
 #              -o        Instead of copying the selected password to the
 #                        clipboard, prints to stdout with a newline.
+#              -p        Prints the location of the weights file and exits.
 # Description: Opens a stylized dmenu prompt with passwords to select
 #              from. Passwords are sorted according to the weight
 #              value attached to them in $weights. Each time a
@@ -20,17 +22,8 @@
 
 usage()
 {
-	echo "Usage: mypassmenu [-1o] [-m regex]"
+	echo "Usage: mypassmenu [-1dmop] [-m regex]"
 }
-
-while getopts "1m:o" opt; do
-	case "$opt" in
-		1) one=1           ;;
-		m) match="$OPTARG" ;;
-		o) stdout=1        ;;
-		*) usage; exit 1   ;;
-	esac
-done
 
 # The directory containing the passwords.
 passdir="${PASSWORD_STORE_DIR-~/.password-store}"
@@ -41,6 +34,17 @@ passdir="${PASSWORD_STORE_DIR-~/.password-store}"
 # logins/aur.archlinux.org/smlavine	4
 # logins/github.com/smlavine	0
 weights="${MYPASSMENU_WEIGHTS-$XDG_DATA_HOME/mypassmenu.tsv}"
+
+while getopts "1dm:op" opt; do
+	case "$opt" in
+		1) one=1                          ;;
+		d) printf '%s\n' "$passdir"; exit ;;
+		m) match="$OPTARG"                ;;
+		o) stdout=1                       ;;
+		p) printf '%s\n' "$weights"; exit ;;
+		*) usage; exit 1                  ;;
+	esac
+done
 
 # If a password is listed in the password store XOR the weight file,
 # then it has either been added to or removed from the password store
