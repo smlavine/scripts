@@ -74,19 +74,27 @@ rotate_screen()
 	# pen, which is misaligned, making me waste time rotating the screen
 	# over again.
 
-	pen='Wacom ISDv4 E6 Pen Pen (0)'
-	eraser='Wacom ISDv4 E6 Pen Eraser (0)'
-	for device in "$pen" "$eraser"; do
-		# The $matrix string must be split on spaces.
-		# shellcheck disable=SC2086
-		if ! xinput --set-prop "$device" 'Coordinate Transformation Matrix' $matrix; then
-			dunstify -t 5000 -u 2 "Input device $device not found."
-			exit 1
-		fi
-	done
+	# TODO: make code more generic to work with more devices in the future
+	#pen='Wacom ISDv4 E6 Pen Pen (0)'
+	#eraser='Wacom ISDv4 E6 Pen Eraser (0)'
+	#for device in "$pen" "$eraser"; do
+	#	# The $matrix string must be split on spaces.
+	#	# shellcheck disable=SC2086
+	#	if ! xinput --set-prop "$device" 'Coordinate Transformation Matrix' $matrix; then
+	#		dunstify -t 5000 -u 2 "Input device $device not found."
+	#		exit 1
+	#	fi
+	#done
+
+	pen='Wacom HID 5284 Pen Pen (0x82235f9d)'
+	# The $matrix string must be split on spaces.
+	# shellcheck disable=SC2086
+	if ! xinput --set-prop "$pen" 'Coordinate Transformation Matrix' $matrix; then
+		dunstify -t 5000 -u 2 "Input device $device not found."
+		exit 1
+	fi
 
 	xrandr -o "$way" || exit $?
-
 }
 
 main()
