@@ -8,12 +8,12 @@
 # File:        hd
 # Description: Fuzzy find autocomplete for haredoc.
 
-function split_harepath()
+split_harepath()
 {
         hare version -v | awk '/^HAREPATH/ { sub(/:/, "\n", $2); print $2 }'
 }
 
-function build_cache()
+build_cache()
 {
         echo 'hd: Building cache. This may take a few seconds.' >&2
 
