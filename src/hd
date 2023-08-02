@@ -1,0 +1,76 @@
+#!/bin/sh
+# Copyright (c) 2023 Sebastian LaVine <mail@smlavine.com>
+# SPDX-License-Identifier: MPL-2.0
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# File:        hd
+# Description: Fuzzy find autocomplete for haredoc.
+
+function split_harepath()
+{
+        hare version -v | awk '/^HAREPATH/ { sub(/:/, "\n", $2); print $2 }'
+}
+
+function build_cache()
+{
+        echo 'hd: Building cache. This may take a few seconds.' >&2
+
+        split_harepath |
+                while read -r path; do
+        		# find: '!' -name '+*' removes build tag directories
+        		find "$path" -type d '!' -name '+*' |
+        			sed -e '1d' -e "s:$path/*::" -e 's_/_::_g'
+        		# sed: find prints "$path" on the first line, 1d
+        		#      removes it
+        		# sed: remove leading path from all other lines
+        		# sed: replace path seperator "/" with hare module
+        		#      separator "::"
+        	done | while read -r module; do
+        		echo "$module"  # Also include the modules themselves
+        		haredoc -Fhare "$module" | awk -v module="$module" '
+        			/^(@[a-z]* )?type .* =/ {
+        				print module "::" $2;
+        			}
+        			/^(@[a-z]* )?fn .*\(/ {
+        				sub(/\(.*/, "", $2);
+        				print module "::" $2;
+        			}
+        			/^(@[a-z]* )?(def|const|let) .*:/ {
+        				sub(/:.*/, "", $2);
+        				print module "::" $2;
+        			}
+        		'
+        	done |
+        	        sort
+}
+
+if ! command -v hare >&-; then
+	echo 'Error: hare not installed. This script depends on hare.' >&2
+	exit 1
+fi
+
+if ! command -v fzf >&-; then
+	echo 'Error: fzf not installed. This script depends on fzf.' >&2
+	exit 1
+fi
+
+if [ ! "$CACHE_FILE" ]; then
+        CACHE_FILE="${XDG_DATA_HOME-~/.local/share}"/hd-cache.txt
+fi
+
+if [ ! -e "$CACHE_FILE" ]; then
+        build_cache > "$CACHE_FILE"
+else
+        split_harepath | while read -r path; do
+                # XXX: GNUism -nt for mtime.
+                # Could shell out to perl or something else instead.
+                if [ "$path" -nt "$CACHE_FILE" ]; then
+                        build_cache > "$CACHE_FILE"
+                        break
+                fi
+        done
+fi
+
+< "$CACHE_FILE" fzf | xargs haredoc
