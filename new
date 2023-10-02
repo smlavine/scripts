@@ -1,0 +1,42 @@
+#!/bin/sh
+# Copyright (c) 2023 Sebastian LaVine <mail@smlavine.com>
+# SPDX-License-Identifier: MPL-2.0
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# File:        new
+# Description: Prefills a new script file with some boilerplate.
+# Arguments:   Names of the scripts to create (in the src/ directory).
+
+# Prints help information for the script.
+# Assumes that the script generally follows my comment block style; see
+# this file and others for reference.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
+options='h'
+while getopts "$options" o; do
+	case "$o" in
+		h) print_help; exit ;;
+		*) print_help; exit 1 ;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+[ "$#" -eq 0 ] && names='world' || names="$*"
+echo "Hello, $names!"
