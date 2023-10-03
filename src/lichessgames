@@ -7,7 +7,6 @@
 #
 # File:        lichessgames
 # Description: Prints URLs of the last N games from some lichess player
-#              previous screenshots to be viewed.
 # Options:     -a amt    Amount of games to list (limited to amt on page)
 #                        (assumed: 1)
 # Arguments:   Username of user to look up.
