@@ -5,9 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        unhibernate
-# Description: Temporarily disables laptop hibernation upon closing the laptop
-#              lid.
+# unhibernate
+#	Temporarily disables laptop hibernation upon closing the laptop
+#	lid.
 
 echo Unhibernation begun. Press Ctrl+C to stop.
 systemd-inhibit --what=handle-lid-switch sleep 1000d

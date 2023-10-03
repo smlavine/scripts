@@ -5,9 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        quitdwm
-# Description: Quits dwm, but first prompts the user with a dmenu prompt asking
-#              if they are sure.
+# quitdwm
+#	Quits dwm, but first prompts the user with a dmenu prompt
+#	asking if they are sure.
 
 if [ "$(printf "Y\nN" | dmenu -i -sb 'dark red' -p "Are you sure?")" = "Y" ]
 then

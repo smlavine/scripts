@@ -5,10 +5,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        intlkey
-# Description: Toggles between the US and US INTL keyboard layouts.
-# Options:     -i        Instead of toggling the keyboard layout, print what
-#                        the current layout is.
+# intlkey
+#	Toggles between the US and US INTL keyboard layouts.
+# Options:
+#	-i	Instead of toggling the layout, print the active layout.
 
 usage()
 {

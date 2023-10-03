@@ -5,13 +5,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        cgs
-# Description: Checks the git statuses of given git repositories. By default,
-#              cgs checks the git statuses of all git repositories in the
-#              current directory.
-# Options:     -r        Also check the status of repositories
-#                        within the given directories.
-# Arguments:   Paths to git repositories to check the status of.
+# cgs
+#	Checks the git statuses of the given directories.
+# Options:
+#	-r	Recursively descend into the given directories.
+# Arguments:
+#	Git repositories to check.
+#	If none are provided, the current directory is used.
 
 # Unless -r is specified, we only want to look for git repositories at the top
 # level of this directory. We use a maxdepth of 2 by default because we are
@@ -22,7 +22,7 @@ options="r"
 while getopts "$options" o; do
 	case "$o" in
 		r) maxdepth="" ;;
-		*) echo "Usage: cgs [-$options]"; exit ;;
+		*) echo "Usage: $0 [-$options]"; exit ;;
 	esac
 done
 

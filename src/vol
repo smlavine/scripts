@@ -5,9 +5,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        vol
-# Description: Gets or sets the system volume.
-# Arguments:   (optional) argument to amixer (ex. 40%, 500, 5%+, 6%-)
+# vol
+#	Gets or sets the system volume.
+# Arguments:
+#	See amixer(1).
 
 # if there are no arguments, output the percentage volumes of left/right Master
 if [ $# -eq 0 ]; then

@@ -5,11 +5,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        touch-menu
-# Description: Provide a menu to perform common activites without needing to
-#              input commands with a keyboard. This is useful in mouse-only
-#              environments, such as when the keyboard is unavailable in a
-#              laptop with tablet capabilities like the Thinkpad X220 Tablet.
+# touch-menu
+#	Provide a menu to perform common activites without needing to
+#	input commands with a keyboard.
+#	This is useful in mouse-only environments, such as when the
+#	keyboard is unavailable in a laptop with tablet capabilities
+#	like the Thinkpad X220 Tablet.
 
 change_brightness()
 {

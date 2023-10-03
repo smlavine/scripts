@@ -5,8 +5,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        hd
-# Description: Fuzzy find completion for haredoc.
+# hd
+#	Fuzzy find completion for haredoc.
 
 split_harepath()
 {

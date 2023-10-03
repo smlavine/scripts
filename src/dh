@@ -5,9 +5,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        dh
-# Description: Lists how much disk space each child directory is using.
-# Arguments:   (optional) directory to read; reads the current directory by
-#              default
+# dh
+#	Lists how much disk space each child directory is using.
+# Arguments:
+#	The directory to read from.
+#	If one is not provided, the current directory is used.
 
 du -hd 1 "${1-.}" | sort -h

@@ -5,11 +5,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        watchyt
-# Description: Watch the given YouTube video in mpv, using yt-dlp.
-# Options:     -c        Use the clipboard value as the video URL.
-#              -d        Open the video description in less. (don't launch mpv)
-# Arguments:   URL of the video to watch
+# watchyt
+#	Watch the given YouTube video in mpv, using yt-dlp.
+# Options:
+#	-c	Use the clipboard value as the video URL.
+#	-d	Open the video description in less. (don't launch mpv)
+# Arguments:
+#	URL of the video to watch
 
 usage()
 {

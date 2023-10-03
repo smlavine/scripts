@@ -5,20 +5,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        mypassmenu
-# Options:     -1        Instead of prompting the user with dmenu, selects the
-#                        top choice automatically.
-#              -d        Prints the location of the password store and exits.
-#              -m        Only show passwords that match the provided regex.
-#              -o        Instead of copying the selected password to the
-#                        clipboard, prints to stdout with a newline.
-#              -p        Prints the location of the weights file and exits.
-# Description: Opens a stylized dmenu prompt with passwords to select
-#              from. Passwords are sorted according to the weight
-#              value attached to them in $weights. Each time a
-#              password is used, its weight increases by one, so that
-#              over time the most used passwords take the least amount
-#              of time to choose from the dmenu prompt.
+# mypassmenu
+#	Opens a stylized dmenu prompt with passwords to select from.
+#	Passwords are sorted according to the weight value attached to
+#	them in $weights.
+#	Each time a password is used, its weight increases by one, such
+#	that over time the most used passwords take the least amount of
+#	time to choose from the dmenu prompt.
+# Options:
+#	-1	Instead of prompting the user with dmenu,
+#		selects the top choice automatically.
+#	-d	Prints the location of the password store and exits.
+#	-m rx	Only show passwords that match the provided regex.
+#	-o	Instead of copying the selected password to the
+#		clipboard, prints to stdout with a newline.
+#	-p	Prints the location of the weights file and exits.
 
 usage()
 {

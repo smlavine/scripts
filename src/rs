@@ -5,12 +5,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        rs
-# Description: Controls the blue light filter.
-# Options:     -f        Turn off the blue light filter.
-#              -n        Turn on the blue light filter.
-#              -t        Toggle the blue light filter. (Assumed)
-# Arguments:   If any, display whether or not the filter is active
+# rs
+#	Controls the blue light filter.
+# Options:
+#	-f	Turn off the blue light filter.
+#	-n	Turn on the blue light filter.
+#	-t	Toggle the blue light filter. (The default)
+# Arguments:
+#	If any, display whether or not the filter is active.
 
 rs_on="$XDG_DATA_HOME/smlss/rs_on"
 [ ! -d "$(dirname "$rs_on")" ] && mkdir -p "$(dirname "$rs_on")"

@@ -5,8 +5,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        sb-date
-# Description: Prints the date in a format desirable for my status bar. See
-#              <https://git.sr.ht/~smlavine/dwmblocks>.
+# sb-date
+#	Prints the date in a format desirable for my status bar.
+#	See <https://git.sr.ht/~smlavine/dwmblocks>.
 
 date '+%a %b %d %r %Z'

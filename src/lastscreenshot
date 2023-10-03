@@ -5,14 +5,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        lastscreenshot
-# Description: Does one or more things with the last screenshot taken.
-# Options:     -c        cat the last screenshot to stdout.
-#              -g        Open the last screenshot in gthumb.
-#              -p        Print the path of the last screenshot. (Assumed)
-#              -s        View all screenshots in sxiv, starting with the newest
-#                        one.
-# Arguments:   The amount of files to use. (By default 1)
+# lastscreenshot
+#	Performs actions on the last screenshots taken. See below.
+# Options:
+#	-c	cat the last screenshot to stdout.
+#	-g	Open the last screenshot in gthumb.
+#	-p	Print the path of the last screenshot. (The default)
+#	-s	View all screenshots in sxiv, starting from the newest.
+# Arguments:
+# 	The maximum amount of files to use.
+# 	If no arguments are provided, it defaults to 1.
 
 screenshot_path="${SCREENSHOT_DIR:-"$HOME/Documents/pictures/screenshots/"}"
 if [ ! -d "$screenshot_path" ]; then

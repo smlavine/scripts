@@ -5,8 +5,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        weather
-# Description: Scrapes and displays weather info from the NWS website.
+# weather
+#	Scrapes and displays weather info from the NWS website.
 
 NWS='https://forecast.weather.gov'
 

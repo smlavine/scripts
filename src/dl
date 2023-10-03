@@ -5,11 +5,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        dl
-# Description: Downloads the given URLs.
-# Options:     -r        Download the URL recursively using wget. User
-#                        discretion is advised.
-# Arguments:   URLs to download.
+# dl
+#	Downloads the given URLs.
+# Options:
+#	-r	Download recursively using wget. Be careful with this.
+# Arguments:
+#	URLs to download.
 
 usage()
 {

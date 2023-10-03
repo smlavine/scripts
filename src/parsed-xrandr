@@ -5,11 +5,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        parsed-xrandr
-# Description: Parses xrandr, and for every input xrandr detects, prints the
-#              following (fields separated by tabs):
+# parsed-xrandr
+#	Parses xrandr, and for every input xrandr detects,
+#	prints the following (fields separated by tabs):
 #
-#              <input-name> <"connected" if connected|"active" if connected and active|"disconnected" if disconnected but still detected> <resolution if active>
+#		<input-name> <"connected" if connected|"active" if connected and active|"disconnected" if disconnected but still detected> <resolution if active>
 
 xrandr | awk '
 	BEGIN {

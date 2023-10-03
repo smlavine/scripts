@@ -5,9 +5,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        mylight
-# Description: Call `light` and notify of the new light level
-# Options:     See light(1).
+# mylight
+#	Call `light` and display a notification for the new light level.
+# Options:
+#	See light(1).
 
 sudo light "$@"
 dunstctl close

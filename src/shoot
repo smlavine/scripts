@@ -5,10 +5,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        shoot
-# Description: Saves a screenshot as PNG. Intended for use with a keybind.
-# Options:     -d        Prompts for filename with dmenu instead of
-#                        using timestamp.
+# shoot
+#	Saves a screenshot as PNG.
+#	Intended for use with a keybind.
+# Options:
+#	-d	Prompts for a filename with dmenu instead of using a
+#		timestamp.
 
 picture_path="${SCREENSHOT_DIR:-"$HOME/Documents/pictures/screenshots/"}"
 

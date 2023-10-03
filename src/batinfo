@@ -5,9 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        batinfo
-# Description: Reformats the output of acpi to be more concise. See
-#              <https://git.sr.ht/~smlavine/dwmblocks>.
+# batinfo
+#	Reformats the output of acpi to be more concise.
+#	See <https://git.sr.ht/~smlavine/dwmblocks>.
 
 # The input is expected to look something like this:
 # Battery 0: Discharging, 99%, 02:44:54 remaining

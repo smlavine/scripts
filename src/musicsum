@@ -5,9 +5,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        musicsum
-# Description: Sums the length of given audio files.
-# Arguments:   Audio files to sum the duration of
+# musicsum
+#	Sums the duration of the provided audio files.
+# Arguments:
+#	Audio files to sum the duration of.
 
 # Recall that there are 3600 seconds in an hour and 60 seconds in a minute.
 

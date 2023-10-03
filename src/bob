@@ -5,7 +5,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        bob
-# Description: Streams shuffled Bob Ross episodes from YouTube.
+# bob
+#	Streams shuffled Bob Ross episodes from YouTube.
 
 mpv --shuffle https://www.youtube.com/playlist?list=PLAEQD0ULngi67rwmhrkNjMZKvyCReqDV4

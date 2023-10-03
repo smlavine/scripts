@@ -5,9 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        current-twitch-chat
-# Description: Opens the twitch chat of the current stream being watched, if
-#              there is one.
+# current-twitch-chat
+#	Opens the twitch chat of the current stream being watched, if
+#	there is one.
 
 ps ax | awk '
 /\/usr\/bin\/streamlink.* twitch.tv\/.* / {

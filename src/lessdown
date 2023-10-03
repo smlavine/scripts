@@ -5,9 +5,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        lessdown
-# Description: Format the given Markdown file(s) to view in less.
-# Arguments:   Markdown files to view
+# lessdown
+#	Lightly format Markdown files for viewing in a pager.
+# Arguments:
+# 	Markdown files to view.
+# 	If none are provided, stdin is used.
 
 # $ expressions are deliberately unexpanded for use in awk.
 # shellcheck disable=SC2016

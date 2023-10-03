@@ -5,9 +5,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        pausemusic
-# Description: Toggles music playback, if music is playing in either pianobar
-#              or mpd.
+# pausemusic
+#	Toggles music playback, if music is playing in pianobar or mpd.
 
 pidof pianobar && printf ' ' > ~/.config/pianobar/ctl
 mpc toggle

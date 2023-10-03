@@ -5,10 +5,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        lcg
-# Description: Launches several instances of catgirl running under tabbed,
-#              to facilitate connections to several IRC servers.
-# Arguments:   catgirl config files to use.
+# lcg
+#	Launches several instances of catgirl running under tabbed.
+#	This facilitates connections to multiple IRC servers at once.
+# Arguments:
+#	catgirl config files to use.
 
 catgirl_configs="${CATGIRL_DIR:-$XDG_CONFIG_HOME/catgirl/dev}"
 

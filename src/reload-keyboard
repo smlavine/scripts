@@ -7,10 +7,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        reload-keyboard
-# Description: Reloads the wireless USB keyboard. This is useful because there
-#              is a bug where keyboard scroll stops working when the keyboard
-#              is used after the computer has been asleep.
+# reload-keyboard
+#	Reloads the wireless USB keyboard.
+#	This is useful because there is a bug where keyboard scroll
+#	stops working when the keyboard is used after the computer has
+#	been asleep.
 
 # This is based originally on the askUbuntu response linked above.
 
