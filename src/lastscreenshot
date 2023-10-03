@@ -7,7 +7,6 @@
 #
 # File:        lastscreenshot
 # Description: Does one or more things with the last screenshot taken.
-#              previous screenshots to be viewed.
 # Options:     -c        cat the last screenshot to stdout.
 #              -g        Open the last screenshot in gthumb.
 #              -p        Print the path of the last screenshot. (Assumed)
