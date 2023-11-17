@@ -1,0 +1,61 @@
+#!/bin/sh
+# Copyright (c) 2023 Sebastian LaVine <mail@smlavine.com>
+# SPDX-License-Identifier: MPL-2.0
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# fn
+#	`find`s for a given file path, trimming off extra characters
+#	from the search term. Useful when double-clicking a terminal to
+#	select a file from `grep` output.
+# Arguments:
+#	Search term to use.
+
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
+options='h'
+while getopts "$options" o; do
+	case "$o" in
+		h) print_help; exit ;;
+		*) print_help >&2; exit 1 ;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+if [ "$#" -ne 1 ]; then
+	echo "$0: no argument provided" >&2
+	print_help >&2
+	exit 1
+fi
+
+# suppose a file is given like "../../triangle.c:7:14", as I might get
+# when copying output from warnings or `grep` or what have you. The awk
+# call will remove the stuff before the file name and after the colon.
+processed="$(echo "$1" | awk '
+	/^(\.\.\/)+/ { sub(/^(\.\.\/)+/, "") }
+	/:.*$/ { sub(/:.*$/, "") }
+	END { print }
+')"
+
+if [ -f "$processed" ]; then
+	printf '%s\n' "$processed"
+else
+	find . -iname "$(basename $processed)"
+fi
