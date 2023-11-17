@@ -5,13 +5,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# File:        new (local to scripts repository)
-# Description: Prefills a new script file with some boilerplate.
-# Arguments:   Names of the scripts to create (in the src/ directory).
+# new
+#	Prefills a new script file with some boilerplate.
+# Arguments:
+#	Name of the script to create (in the src/ directory).
+#	If the script already exists, new text is appended to the file.
 
-# Prints help information for the script.
-# Assumes that the script generally follows my comment block style; see
-# this file and others for reference.
+# Prints help information from the script's comment header.
 print_help()
 {
 	< "$0" awk '
@@ -32,11 +32,62 @@ options='h'
 while getopts "$options" o; do
 	case "$o" in
 		h) print_help; exit ;;
-		*) print_help; exit 1 ;;
+		*) print_help >&2; exit 1 ;;
 	esac
 done
 
 shift $((OPTIND - 1))
 
-[ "$#" -eq 0 ] && names='world' || names="$*"
-echo "Hello, $names!"
+if [ "$#" -ne 1 ]; then
+	echo "$0: no argument provided" >&2
+	print_help >&2
+	exit 1
+fi
+
+path="src/$1"  # XXX: exact wording here important for awk matching below
+
+if ! touch "$path"; then
+	echo "$0: touch failed. Does '$1' contain a subdirectory?" >&2
+	exit 1
+fi
+
+if ! [ -f "$path" ]; then
+	echo "$0: '$path' is not a regular file" >&2
+	exit 1
+fi
+
+# copy THIS file to the path for the new script, with some adjustments.
+< "$0" awk -v progname="$1" '
+	/^# Copyright \(c\) [0-9]+/ {
+		# Keep the copyright year updated
+		"date +%Y" | getline year
+		sub(/[0-9]+/, year)
+		print
+		next
+	}
+
+	/^# new$/ {
+		print "# " progname
+
+		getline  # skip description string of new
+		print "#\t>>> (INSERT PROGRAM DESCRIPTION HERE) <<<"
+
+		getline  # get "# Arguments:"
+		print
+
+		getline  # skip actual arguments of new
+		getline  # XXX: dependent on new having two lines here
+		print "#\t>>> (DOCUMENT PROGRAM ARGUMENTS HERE) <<<"
+
+		next
+	}
+
+	/^path=/ {
+		# do not include the rest of this logic in the copied file.
+		print "echo Hello, \"$1\"!"
+		exit
+	}
+
+	{ print }
+' >> "$path"
+chmod +x "$path"
