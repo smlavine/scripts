@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (c) 2021-2022 Sebastian LaVine <mail@smlavine.com>
+# Copyright (c) 2021-2024 Sebastian LaVine <mail@smlavine.com>
 # SPDX-License-Identifier: MPL-2.0
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -8,9 +8,12 @@
 # rs
 #	Controls the blue light filter.
 # Options:
-#	-f	Turn off the blue light filter.
-#	-n	Turn on the blue light filter.
-#	-t	Toggle the blue light filter. (The default)
+#	-f 	Turn off the blue light filter. (off)
+#	-h	Display usage information (help).
+#	-m	Turn on the blue light filter, but at half power. (mid)
+#	-n	Turn on the blue light filter. (on)
+#	-t	Toggle the blue light filter. (toggle; The default)
+#	-w	Display information about the filter. (what)
 # Arguments:
 #	If any, display whether or not the filter is active.
 
@@ -23,10 +26,16 @@ off()
 	rm "$rs_on"
 }
 
+mid()
+{
+	redshift -PO 4500
+	printf '4500K -- mid' > "$rs_on"
+}
+
 on()
 {
 	redshift -PO 3500
-	touch "$rs_on"
+	printf '3500K -- full' > "$rs_on"
 }
 
 toggle()
@@ -38,13 +47,31 @@ toggle()
 	fi
 }
 
-options="fnt"
+what()
+{
+	if [ -f "$rs_on" ]; then
+		notify-send -t 3000 \
+			"The blue light filter is ON ($(cat "$rs_on"))."
+	else
+		notify-send -t 3000 "The blue light filter is OFF."
+	fi
+}
+
+print_help()
+{
+	echo 'Usage: rs [-fhmntw / [off, help, mid, on, toggle, what] ]'
+}
+
+options="fhmntw"
 while getopts "$options" o; do
 	case "$o" in
 		f) off; exit ;;
+		h) print_help; exit ;;
+		m) mid; exit ;;
 		n) on; exit ;;
 		t) toggle; exit ;;
-		*) echo "Usage: rs [-$options]"; exit ;;
+		w) what; exit ;;
+		*) print_help; exit 1 ;;
 	esac
 done
 
@@ -53,9 +80,11 @@ shift $((OPTIND - 1))
 if [ $# -eq 0 ]; then
 	toggle
 else
-	if [ -f "$rs_on" ]; then
-		notify-send -t 3000 "The blue light filter is ON."
-	else
-		notify-send -t 3000 "The blue light filter is OFF."
-	fi
+	case "$1" in
+		'off') off ;;
+		'mid') mid ;;
+		'on') on ;;
+		'toggle') toggle ;;
+		'what'|*) what ;;
+	esac
 fi
