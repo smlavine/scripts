@@ -11,7 +11,7 @@
 #	-f 	Turn off the blue light filter. (off)
 #	-h	Display usage information (help).
 #	-m	Turn on the blue light filter, but at half power. (mid)
-#	-n	Turn on the blue light filter. (on)
+#	-n	Turn on the blue light filter. (on, full)
 #	-t	Toggle the blue light filter. (toggle; The default)
 #	-w	Display information about the filter. (what)
 # Arguments:
@@ -83,7 +83,7 @@ else
 	case "$1" in
 		'off') off ;;
 		'mid') mid ;;
-		'on') on ;;
+		'on'|'full') on ;;
 		'toggle') toggle ;;
 		'what'|*) what ;;
 	esac
