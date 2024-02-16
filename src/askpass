@@ -8,5 +8,40 @@
 # askpass
 #	A graphical program to request a user's password.
 #	Intended for integration with sudo(8).
+# Arguments:
+#	Prompt to use.
+
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
+options='h'
+while getopts "$options" o; do
+	case "$o" in
+		h) print_help; exit ;;
+		*) print_help >&2; exit 1 ;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+if [ "$#" -ne 1 ]; then
+	echo "$0: illegal arguments provided" >&2
+	print_help >&2
+	exit 1
+fi
 
 dmenu -P -p "$1"

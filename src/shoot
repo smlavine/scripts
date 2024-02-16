@@ -6,20 +6,51 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # shoot
-#	Saves a screenshot as PNG.
-#	Intended for use with a keybind.
+#	Saves a screenshot as PNG. Intended for use with a keybind.
 # Options:
 #	-d	Prompts for a filename with dmenu instead of using a
 #		timestamp.
 
-picture_path="${SCREENSHOT_DIR:-"$HOME/Documents/pictures/screenshots/"}"
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
 
 # take picture as soon as possible
 file="$(mktemp)"
 xwd -root | convert xwd:- png:"$file"
 
-# read name from dmenu. Input from /dev/null so that it doesn't block for input
-[ "$1" = "-d" ] && name=$(dmenu -p "Name?" < /dev/null) 
+options='dh'
+while getopts "$options" o; do
+	case "$o" in
+		d) name="$(dmenu -p "Name?" < /dev/null)"
+		h) print_help; exit ;;
+		*) print_help >&2; exit 1 ;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+if [ "$#" -ne 0 ]; then
+	echo "$0: illegal arguments provided" >&2
+	print_help >&2
+	exit 1
+fi
+
+picture_path="${SCREENSHOT_DIR:-"$HOME/Documents/pictures/screenshots/"}"
 
 # either "-d" not used, OR dmenu cancelled out before input:
 # generate name based on time taken
@@ -31,4 +62,3 @@ if [ -d "$picture_path" ]; then
 else
 	mv "$file" "$HOME/$name.png"
 fi
-

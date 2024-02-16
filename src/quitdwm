@@ -6,8 +6,41 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # quitdwm
-#	Quits dwm, but first prompts the user with a dmenu prompt
-#	asking if they are sure.
+#	Quits dwm, but first prompts the user with a dmenu prompt asking
+#	if they are sure.
+
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
+options='h'
+while getopts "$options" o; do
+	case "$o" in
+		h) print_help; exit ;;
+		*) print_help >&2; exit 1 ;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+if [ "$#" -ne 0 ]; then
+	echo "$0: illegal arguments provided" >&2
+	print_help >&2
+	exit 1
+fi
 
 if [ "$(printf "Y\nN" | dmenu -i -sb 'dark red' -p "Are you sure?")" = "Y" ]
 then

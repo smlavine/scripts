@@ -8,6 +8,40 @@
 # cleanvideo
 #	Filters some background noise from a video.
 #	Optionally converts the format.
+# Arguments:
+#	input file, output file
 
-[ "$#" -eq 2 ] && ffmpeg -i "$1" -af "highpass=f=200, lowpass=f=3000" "$2"\
-	|| echo "Usage: clean-video in.format out.format"
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
+options='h'
+while getopts "$options" o; do
+	case "$o" in
+		h) print_help; exit ;;
+		*) print_help >&2; exit 1 ;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+if [ "$#" -ne 2 ]; then
+	echo "$0: invalid arguments provided" >&2
+	print_help >&2
+	exit 1
+fi
+
+ffmpeg -i "$1" -af "highpass=f=200, lowpass=f=3000" "$2"

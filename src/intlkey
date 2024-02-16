@@ -10,17 +10,39 @@
 # Options:
 #	-i	Instead of toggling the layout, print the active layout.
 
-usage()
+# Prints help information from the script's comment header.
+print_help()
 {
-	echo "usage: intlkey [-i]"
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
 }
 
-while getopts "i" o; do
+options='hi'
+while getopts "$options" o; do
 	case "$o" in
+		h) print_help; exit ;;
 		i) i=1 ;;
-		*) usage; exit ;;
+		*) print_help >&2; exit 1 ;;
 	esac
 done
+
+shift $((OPTIND - 1))
+
+if [ "$#" -ne 0 ]; then
+	echo "$0: invalid arguments provided" >&2
+	print_help >&2
+	exit 1
+fi
 
 variant="$(setxkbmap -query | awk '/^variant:/ { print $2 }')"
 

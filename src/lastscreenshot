@@ -16,6 +16,57 @@
 # 	The maximum amount of files to use.
 # 	If no arguments are provided, it defaults to 1.
 
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
+# TODO: instead of this weird async stuff, just have one variable to hold
+# the command to execute with the data.
+print_path=1
+
+options='cghps'
+while getopts "$options" o; do
+	case "$o" in
+		c) unset print_path; cat=1 ;;
+		g) unset print_path; gthumb=1 ;;
+		h) print_help; exit ;;
+		p) print_path=1 ;;
+		s) unset print_path; sxiv=1 ;;
+		*) print_help >&2; exit 1 ;;
+	esac
+done
+
+
+shift $((OPTIND - 1))
+
+if [ "$#" -eq 0 ]; then
+	amount=1
+elif [ "$#" -eq 1 ]; then
+	if [ "$1" -gt 0 ]; then
+		amount="$1"
+	else
+		echo 'Argument must be an integer greater than zero' >&2
+		exit 1
+	fi
+else
+	echo "$0: no argument provided" >&2
+	print_help >&2
+	exit 1
+fi
+
 screenshot_path="${SCREENSHOT_DIR:-"$HOME/Documents/pictures/screenshots/"}"
 if [ ! -d "$screenshot_path" ]; then
 	printf 'lastscreenshot: %s: no such directory\n' "$screenshot_path" >&2
@@ -38,36 +89,6 @@ screenshots_time_sorted()
 	# shellcheck disable=SC2012
 	ls -1At "$screenshot_path"/* | sed 's://:/:g'
 }
-
-usage()
-{
-	echo 'usage: lastscreenshot [-cghps] [amt]' >&2
-}
-
-print_path=1
-amount=1
-
-options='cghps'
-while getopts "$options" o; do
-	case "$o" in
-		c) unset print_path; cat=1 ;;
-		g) unset print_path; gthumb=1 ;;
-		p) print_path=1 ;;
-		s) unset print_path; sxiv=1 ;;
-		*) usage; exit 1 ;;
-	esac
-done
-
-shift $((OPTIND - 1))
-
-if [ "$1" ]; then
-	if [ "$1" -gt 0 ]; then
-		amount="$1"
-	else
-		echo 'Argument must be an integer greater than zero' >&2
-		exit 1
-	fi
-fi
 
 [ "$print_path" ] && screenshots_time_sorted | sed "$amount"q &
 [ "$cat" ] && screenshots_time_sorted | sed "$amount"q | xargs cat &

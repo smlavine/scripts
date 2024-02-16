@@ -12,6 +12,23 @@
 #	keyboard is unavailable in a laptop with tablet capabilities
 #	like the Thinkpad X220 Tablet.
 
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
 change_brightness()
 {
 	while true; do
@@ -100,6 +117,16 @@ rotate_screen()
 
 main()
 {
+	options='h'
+	while getopts "$options" o; do
+		case "$o" in
+			h) print_help; exit ;;
+			*) print_help >&2; exit 1 ;;
+		esac
+	done
+
+	shift $((OPTIND - 1))
+
 	if [ "$#" -eq 0 ]; then
 		item="$(dmenu -c -i -l 20 -fn 'monospace:size=50' \
 			-p 'What to do?')"

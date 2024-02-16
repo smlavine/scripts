@@ -17,6 +17,23 @@
 # Arguments:
 #	If any, display whether or not the filter is active.
 
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
 rs_on="$XDG_DATA_HOME/smlss/rs_on"
 [ ! -d "$(dirname "$rs_on")" ] && mkdir -p "$(dirname "$rs_on")"
 
@@ -55,11 +72,6 @@ what()
 	else
 		notify-send -t 3000 "The blue light filter is OFF."
 	fi
-}
-
-print_help()
-{
-	echo 'Usage: rs [-fhmntw / [off, help, mid, on, toggle, what] ]'
 }
 
 options="fhmntw"

@@ -8,7 +8,33 @@
 # musicsum
 #	Sums the duration of the provided audio files.
 # Arguments:
-#	Audio files to sum the duration of.
+#	Audio files to sum the duration of; if none provided, the
+#	contents of the current directory are used.
+
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
+options='h'
+while getopts "$options" o; do
+	case "$o" in
+		h) print_help; exit ;;
+		*) print_help >&2; exit 1 ;;
+	esac
+done
 
 # Recall that there are 3600 seconds in an hour and 60 seconds in a minute.
 

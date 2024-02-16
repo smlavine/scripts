@@ -21,10 +21,43 @@
 #		clipboard, prints to stdout with a newline.
 #	-p	Prints the location of the weights file and exits.
 
-usage()
+# Prints help information from the script's comment header.
+print_help()
 {
-	echo "Usage: mypassmenu [-1dmop] [-m regex]"
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
 }
+
+options='1dhm:op'
+while getopts "$options" o; do
+	case "$o" in
+		1) one=1                          ;;
+		d) printf '%s\n' "$passdir"; exit ;;
+		h) print_help; exit ;;
+		m) match="$OPTARG"                ;;
+		o) stdout=1                       ;;
+		p) printf '%s\n' "$weights"; exit ;;
+		*) print_help >&2; exit 1 ;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+if [ "$#" -ne 0 ]; then
+	echo "$0: illegal arguments provided" >&2
+	print_help >&2
+	exit 1
+fi
 
 # The directory containing the passwords.
 passdir="${PASSWORD_STORE_DIR-~/.password-store}"
@@ -35,17 +68,6 @@ passdir="${PASSWORD_STORE_DIR-~/.password-store}"
 # logins/aur.archlinux.org/smlavine	4
 # logins/github.com/smlavine	0
 weights="${MYPASSMENU_WEIGHTS-$XDG_DATA_HOME/mypassmenu.tsv}"
-
-while getopts "1dm:op" opt; do
-	case "$opt" in
-		1) one=1                          ;;
-		d) printf '%s\n' "$passdir"; exit ;;
-		m) match="$OPTARG"                ;;
-		o) stdout=1                       ;;
-		p) printf '%s\n' "$weights"; exit ;;
-		*) usage; exit 1                  ;;
-	esac
-done
 
 # If a password is listed in the password store XOR the weight file,
 # then it has either been added to or removed from the password store

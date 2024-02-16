@@ -6,10 +6,43 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # parsed-xrandr
-#	Parses xrandr, and for every input xrandr detects,
-#	prints the following (fields separated by tabs):
+#	Parses xrandr, and for every input xrandr detects, prints the
+#	following (fields separated by tabs):
 #
 #		<input-name> <"connected" if connected|"active" if connected and active|"disconnected" if disconnected but still detected> <resolution if active>
+
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
+options='h'
+while getopts "$options" o; do
+	case "$o" in
+		h) print_help; exit ;;
+		*) print_help >&2; exit 1 ;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+if [ "$#" -ne 0 ]; then
+	echo "$0: illegal arguments provided" >&2
+	print_help >&2
+	exit 1
+fi
 
 xrandr | awk '
 	BEGIN {

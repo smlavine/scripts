@@ -13,6 +13,39 @@
 #	stops working when the keyboard is used after the computer has
 #	been asleep.
 
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
+options='h'
+while getopts "$options" o; do
+	case "$o" in
+		h) print_help; exit ;;
+		*) print_help >&2; exit 1 ;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+if [ "$#" -ne 0 ]; then
+	echo "$0: illegal arguments provided" >&2
+	print_help >&2
+	exit 1
+fi
+
 # This is based originally on the askUbuntu response linked above.
 
 port="3-3.2" # as shown by lsusb -t: {bus}-{port}(.{subport})
@@ -20,5 +53,3 @@ port="3-3.2" # as shown by lsusb -t: {bus}-{port}(.{subport})
 echo "$port" >/sys/bus/usb/drivers/usb/unbind
 sleep 0.25
 echo "$port" >/sys/bus/usb/drivers/usb/bind
-
-

@@ -12,19 +12,39 @@
 # Arguments:
 #	URLs to download.
 
-usage()
+# Prints help information from the script's comment header.
+print_help()
 {
-	echo "USAGE: dl [-r] [url]..."
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
 }
 
-while getopts "rh" o; do
+options='hr'
+while getopts "$options" o; do
 	case "$o" in
+		h) print_help; exit ;;
 		r) recurse=1 ;;
-		*) usage; exit ;;
+		*) print_help >&2; exit 1 ;;
 	esac
 done
 
 shift $((OPTIND - 1))
+
+if [ "$#" -eq 0 ]; then
+	echo "$0: no arguments provided" >&2
+	print_help >&2
+	exit 1
+fi
 
 for file in "$@"; do
 	if [ "$recurse" ]; then

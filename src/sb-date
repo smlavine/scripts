@@ -9,4 +9,6 @@
 #	Prints the date in a format desirable for my status bar.
 #	See <https://git.sr.ht/~smlavine/dwmblocks>.
 
+# Intentionally not using the `new` style for simplicity in this case.
+
 date '+%a %b %d %r %Z'

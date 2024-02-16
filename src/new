@@ -8,4 +8,6 @@
 # new
 #	Opens a new program, called by the program arguments.
 
+# Intentionally not using the `new` style to simply invoke the new command.
+
 nohup "$@" >/dev/null &

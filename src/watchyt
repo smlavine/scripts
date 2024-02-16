@@ -13,21 +13,40 @@
 # Arguments:
 #	URL of the video to watch
 
-usage()
+# Prints help information from the script's comment header.
+print_help()
 {
-	echo "Usage: watchyt [-cd] [url]"
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
 }
 
-while getopts "cdh" o; do
+options='cdh'
+while getopts "$options" o; do
 	case "$o" in
 		c) url="$(xclip -selection c -o)" ;;
 		d) description="True" ;;
-		*) usage; exit ;;
+		h) print_help; exit ;;
+		*) print_help >&2; exit 1 ;;
 	esac
 done
 
-# I didn't know this existed until I read the getopts man page. It's useful!
 shift $((OPTIND - 1))
+
+if [ "$#" -ne 1 ]; then
+	echo "$0: illegal arguments provided" >&2
+	print_help >&2
+	exit 1
+fi
 
 # if there isn't already a url and there is no argument, get a url through a
 # dmenu prompt.
@@ -77,4 +96,3 @@ else
 	fi
 	rm "$errfile"
 fi
-

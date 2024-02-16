@@ -10,6 +10,8 @@
 # Options:
 #	See light(1).
 
+# Intentionally not using the `new` style so all arguments can flow to `light`.
+
 sudo light "$@"
 dunstctl close
 light | xargs -Ix dunstify -t 500 x
