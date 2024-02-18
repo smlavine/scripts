@@ -43,8 +43,6 @@ if [ "$#" -gt 1 ]; then
 	exit 1
 fi
 
-echo Hello, "$1"!
-
 # if there are no arguments, output the percentage volumes of left/right Master
 if [ $# -eq 0 ]; then
 	amixer sget Master | grep -o '\[[0-9]*%\]' | tr -d '[]%' | paste -sd'|'
