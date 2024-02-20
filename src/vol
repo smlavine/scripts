@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (c) 2019-2023 Sebastian LaVine <mail@smlavine.com>
+# Copyright (c) 2019-2024 Sebastian LaVine <mail@smlavine.com>
 # SPDX-License-Identifier: MPL-2.0
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -45,7 +45,15 @@ fi
 
 # if there are no arguments, output the percentage volumes of left/right Master
 if [ $# -eq 0 ]; then
-	amixer sget Master | grep -o '\[[0-9]*%\]' | tr -d '[]%' | paste -sd'|'
+	amixer sget Master | grep -o '\[[0-9]*%\]' | tr -d '[]%' | {
+		read first
+		read second
+		if [ "$first" = "$second" ]; then
+			echo "$first%"
+		else
+			echo "$first|$second"
+		fi
+	}
 else
 	# set the audio according to the first argument
 	amixer -q set Master "$1"
