@@ -42,12 +42,6 @@ done
 
 shift $((OPTIND - 1))
 
-if [ "$#" -ne 1 ]; then
-	echo "$0: illegal arguments provided" >&2
-	print_help >&2
-	exit 1
-fi
-
 # if there isn't already a url and there is no argument, get a url through a
 # dmenu prompt.
 if [ "$url" ]; then
