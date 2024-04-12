@@ -13,12 +13,15 @@
 # Battery 0: Discharging, 99%, 02:44:54 remaining
 
 BEGIN {
-	"acpi" | getline
-	close("acpi")
-
-	if (length == 0) {
-		exit
+	for (;;) {
+		"acpi" | getline
+		if ($3 == "Unknown,") {
+			continue
+		} else {
+			break
+		}
 	}
+	close("acpi")
 
 	if ($3 == "Charging,") {
 		status = "CHR"
