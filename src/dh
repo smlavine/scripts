@@ -7,6 +7,8 @@
 #
 # dh
 #	Lists how much disk space each child directory is using.
+# Options:
+#	-b	Print bytewise total, not human-readable approximation
 # Arguments:
 #	The directory to read from.
 #	If one is not provided, the current directory is used.
@@ -28,9 +30,12 @@ print_help()
 	'
 }
 
-options='h'
+b=0
+
+options='bh'
 while getopts "$options" o; do
 	case "$o" in
+		b) b=1 ;;
 		h) print_help; exit ;;
 		*) print_help >&2; exit 1 ;;
 	esac
@@ -48,4 +53,8 @@ else
 	exit 1
 fi
 
-du -hd 1 "${1-.}" | sort -h
+if [ "$b" -eq 1 ]; then
+	du -b -d 1 "$directory" | sort -h
+else
+	du -hd 1 "$directory" | sort -h
+fi
