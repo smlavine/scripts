@@ -15,7 +15,7 @@
 BEGIN {
 	for (;;) {
 		"acpi" | getline
-		if ($3 == "Unknown,") {
+		if ($3 == "Unknown," || $4 == "0%,") {
 			continue
 		} else {
 			break
