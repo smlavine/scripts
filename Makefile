@@ -2,7 +2,10 @@
 
 all: install
 
-install:
+$(HOME)/.local/bin:
+	mkdir "$(HOME)/.local/bin"
+
+install: $(HOME)/.local/bin
 	find src -mindepth 1 -type f | \
 		xargs -I'{}' cp -v '{}' "$(HOME)/.local/bin"
 
