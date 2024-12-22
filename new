@@ -72,6 +72,9 @@ fi
 		getline  # skip description string of new
 		print "#\t>>> (INSERT PROGRAM DESCRIPTION HERE) <<<"
 
+		print "# Options:"
+		print "#\t>>> (DOCUMENT PROGRAM OPTIONS HERE) <<<"
+
 		getline  # get "# Arguments:"
 		print
 
