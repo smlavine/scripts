@@ -1,0 +1,102 @@
+#!/bin/sh
+# Copyright (c) 2024 Sebastian LaVine <mail@smlavine.com>
+# SPDX-License-Identifier: MPL-2.0
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# sl
+#	Wrapper around `ln -s`, because I always forget the order.
+# Options:
+#	-f	Symlink "from" location. The original file.
+#	-t	Symlink "to" location. The new symlink.
+# Arguments:
+#	(optional) `from <file_location> to <symlink_location>`
+
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
+options='hf:t:'
+while getopts "$options" o; do
+	case "$o" in
+		f) from="$OPTARG" ;;
+		h) print_help; exit ;;
+		t) to="$OPTARG" ;;
+		*) print_help >&2; exit 1 ;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+#
+# Special case "from"/"to" arguments handling
+#
+
+if [ "$#" -eq 2 ]; then
+	if [ "$1" = 'from' ]; then
+		echo "$0: missing \"to\"" >&2
+		print_help >&2
+		exit 1
+	elif [ "$1" = 'to' ]; then
+		echo "$0: missing \"from\"" >&2
+		print_help >&2
+		exit 1
+	fi
+	# else: handled by "illegal arguments" branch below
+fi
+
+if [ "$#" -eq 4 ]; then
+	if [ "$1" = 'from' -a "$3" = 'to' ]; then
+		from="$2"
+		to="$4"
+	elif [ "$1" = 'to' -a "$3" = 'from' ]; then
+		to="$2"
+		from="$4"
+	else
+		echo "$0: invalid arguments provided" >&2
+		print_help >&2
+		exit 1
+	fi
+	shift 4
+fi
+
+
+if [ "$#" -ne 0 ]; then
+	echo "$0: illegal arguments provided" >&2
+	print_help >&2
+	exit 1
+fi
+
+if [ ! "$from" -a ! "$to" ]; then
+	echo "$0: missing arguments" >&2
+	print_help >&2
+	exit 1
+fi
+
+if [ ! "$from" ]; then
+	echo "$0: missing \"from\"" >&2
+	print_help >&2
+	exit 1
+fi
+
+if [ ! "$to" ]; then
+	echo "$0: missing \"to\"" >&2
+	print_help >&2
+	exit 1
+fi
+
+ln -s "$from" "$to"
