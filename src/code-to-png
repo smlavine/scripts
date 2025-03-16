@@ -1,0 +1,62 @@
+#!/bin/sh
+# Copyright (c) 2025 Sebastian LaVine <mail@smlavine.com>
+# SPDX-License-Identifier: MPL-2.0
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# code_to_png
+#	Generates a graph of C/C++ includes.
+# Options:
+#	-o <output>	Output file for the png.
+# Arguments:
+#	Directory to produce a graph for.
+
+# Prints help information from the script's comment header.
+print_help()
+{
+	< "$0" awk '
+		/^#$/ {
+			getline  # skip the /^#$/ line
+			# loop until empty line
+			while (length) {
+				sub(/^# ?/, "")
+				print
+				getline
+			}
+			exit
+		}
+	'
+}
+
+options='o:h'
+while getopts "$options" o; do
+	case "$o" in
+		o) output="$OPTARG" ;;
+		h) print_help; exit ;;
+		*) print_help >&2; exit 1 ;;
+	esac
+done
+
+if [ ! "$output" ]; then
+	echo "$0: missing output file" >&2
+	print_help >&2
+	exit 1
+fi
+
+shift $((OPTIND - 1))
+
+if [ "$#" -ne 1 ]; then
+	echo "$0: missing directory" >&2
+	print_help >&2
+	exit 1
+fi
+
+directory="$1"
+
+dot="$(mktemp)"
+
+code_to_dot "$directory" "$dot"
+dot -Tpng "$dot" -o "$output"
+
+rm "$dot"
