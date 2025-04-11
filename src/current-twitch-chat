@@ -43,7 +43,7 @@ if [ "$#" -ne 0 ]; then
 fi
 
 ps ax | awk '
-/\/usr\/bin\/streamlink.* twitch.tv\/.* / {
+/streamlink.* twitch.tv\/.* / {
 	# The twitch.tv argument is usually after a lot of options when
 	# launched by streamlink-twitch-gui, so start looking from the end
 	# first.
