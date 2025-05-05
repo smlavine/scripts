@@ -83,9 +83,11 @@ img="/tmp/weather-$location"
 
 # Scrapes the page for graphical weather information for the URL of the chart
 # image, downloads it, then pipes it to sxiv to view.
-curl "$NWS/$(curl "$NWS/MapClick.php?FcstType=graphical&$location" |
+
+img_route="$(curl "$NWS/MapClick.php?FcstType=graphical&$location" |
 	grep meteograms |
-	sed -e 's/^.*meteograms/meteograms/' -e 's/".*$//')" > "$img"
+	sed -e 's/^.*meteograms/meteograms/' -e 's/".*$//')"
+curl "$NWS/$img_route" > "$img"
 
 sxiv "$img"
 
