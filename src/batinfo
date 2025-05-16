@@ -15,6 +15,8 @@
 BEGIN {
 	for (;;) {
 		"acpi" | getline
+		# TODO: Handle edge case when recharging from empty with a low
+		# charging rate where the battery level can indeed be at 0%
 		if ($3 == "Unknown," || $4 == "0%,") {
 			continue
 		} else {
