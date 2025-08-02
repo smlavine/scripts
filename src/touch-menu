@@ -104,7 +104,7 @@ rotate_screen()
 	#	fi
 	#done
 
-	pen='Wacom HID 5284 Pen Pen (0x82235f9d)'
+	pen='Wacom HID 5284 Pen stylus'
 	# The $matrix string must be split on spaces.
 	# shellcheck disable=SC2086
 	if ! xinput --set-prop "$pen" 'Coordinate Transformation Matrix' $matrix; then
